@@ -5,6 +5,7 @@
 "
 " Current Custom Key Binds:
 "
+"
 " \l            (List Toggle) Toggle Location List (The list at the bottom of
 "                     the screen that tells you what errors you have)
 " gd            (Coc) Go to Definition
@@ -99,20 +100,26 @@ if !has('nvim')
     set signcolumn=number
 endif
 
+
+" Normal (Not Mode. Just general not plugin or neovim specific) Remappings
+nnoremap j gj
+nnoremap k gk
+
+
 " WSL yank support
-if has('wsl')
-    let g:clipboard = {
-                \ 'name': 'win32yank-wsl',
-                \ 'copy': {
-                    \ '+': 'win32yank.exe -i --crlf',
-                    \ '*': 'win32yank.exe -i --crlf',
-                \ },
-                \ 'paste': {
-                    \ '+': 'win32yank.exe -o --lf',
-                    \ '*': 'win32yank.exe -o --lf',
-                \ },
-                \ 'cache_enabled': 0,
-            \ }
+" if has('wsl')
+    " let g:clipboard = {
+                " \ 'name': 'win32yank-wsl',
+                " \ 'copy': {
+                    " \ '+': 'win32yank.exe -i --crlf',
+                    " \ '*': 'win32yank.exe -i --crlf',
+                " \ },
+                " \ 'paste': {
+                    " \ '+': 'win32yank.exe -o --lf',
+                    " \ '*': 'win32yank.exe -o --lf',
+                " \ },
+                " \ 'cache_enabled': 0,
+            " \ }
 
     " let s:clip = '/mnt/c/Windows/System32/clip.exe'
     " if executable(s:clip)
@@ -121,7 +128,7 @@ if has('wsl')
             " autocmd TextYankPost * if v:event.operator ==# 'y' | call system(s:clip, @0) | endif
         " augroup END
     " endif
-endif
+" endif
 
 
 
