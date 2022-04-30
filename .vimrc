@@ -333,7 +333,7 @@ require('neogen').setup {
     enabled = true
 }
 require('nvim-treesitter.configs').setup { 
-    ensure_installed = {"cmake", "python", "lua", "json", "cpp", "java", "javascript", "css"}, 
+    ensure_installed = {"cmake", "python", "lua", "json", "cpp", "java", "javascript", "css", "c", "jsdoc", "make", "markdown", "html", "typescript", "ruby", "rust", "vim", "bash", "c_sharp"}, 
     highlight = { enable = true } 
 }
 
