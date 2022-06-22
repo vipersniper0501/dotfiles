@@ -132,8 +132,8 @@ nnoremap k gk
 
 
 
-
-if !empty(glob('~/.vim/autoload/plug.vim'))
+" For some reason when this is turned on vim plug doesn't work.
+"if filereadable("/home/viper/.vim/autoload/plug.vim")
 
     " Color schemes
     colorscheme sonokai
@@ -283,7 +283,8 @@ if !empty(glob('~/.vim/autoload/plug.vim'))
 
     " NOTE: Treesitter Settings at bottom of file
 
-    call plug#begin('~/.vim/plugged')
+    "call plug#begin('~/.vim/plugged')
+    call plug#begin()
     if has('nvim-0.5')
         Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
         Plug 'danymat/neogen'
@@ -346,4 +347,4 @@ EOF
 
     endif
 
-endif
+"endif
