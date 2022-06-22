@@ -66,7 +66,6 @@ if empty(glob('~/.vim/autoload/plug.vim'))
     endif
 endif
 
-
 " Normal Vim settings
 set nocompatible
 syntax on
@@ -283,8 +282,7 @@ nnoremap k gk
 
     " NOTE: Treesitter Settings at bottom of file
 
-    "call plug#begin('~/.vim/plugged')
-    call plug#begin()
+    call plug#begin('~/.vim/plugged')
     if has('nvim-0.5')
         Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
         Plug 'danymat/neogen'
