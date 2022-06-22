@@ -2,4 +2,4 @@
 
 To install first clone the repo using: `git clone git@github.com:vipersniper0501/dotfiles.git $HOME/.dot_cfg`
  
-Then, run `git --git-dir=/home/<user>/.dot_cfg/.git --work-tree=$HOME -f checkout`
+Then, run `git --git-dir=/home/<user>/.dot_cfg/.git --work-tree=$HOME checkout -f`
