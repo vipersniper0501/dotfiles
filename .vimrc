@@ -90,7 +90,7 @@ set linebreak
 set history=9999
 set encoding=utf-8
 set updatetime=100
-" set omnifunc=syntaxcomplete#Complete
+set omnifunc=syntaxcomplete#Complete
 set termguicolors
 set fillchars+=stlnc:-
 set fillchars+=stl:-
@@ -208,6 +208,8 @@ nnoremap k gk
     nmap <silent> gi <Plug>(coc-implementation)
     nmap <silent> gr <Plug>(coc-references)
     nmap <silent> K :call <SID>show_documentation()<CR>
+
+    " Function that allows shifted K to show documentation in a popup window.
     function! s:show_documentation()
       if (index(['vim','help'], &filetype) >= 0)
         execute 'h '.expand('<cword>')
@@ -332,7 +334,7 @@ require('neogen').setup {
     enabled = true
 }
 require('nvim-treesitter.configs').setup { 
-    ensure_installed = {"cmake", "python", "lua", "json", "cpp", "java", "javascript", "css", "c", "jsdoc", "make", "markdown", "html", "typescript", "ruby", "rust", "vim", "bash", "c_sharp"}, 
+    ensure_installed = {"cmake", "python", "json", "cpp", "java", "javascript", "css", "c", "jsdoc", "make", "markdown", "html", "typescript", "ruby", "rust", "vim", "bash", "c_sharp"}, 
     highlight = { enable = true } 
 }
 
