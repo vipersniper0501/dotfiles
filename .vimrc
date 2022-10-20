@@ -170,7 +170,7 @@ nnoremap k gk
 
     let g:ale_linters = {'cpp': ['gcc']}
 
-    " let g:ale_linters.rust = ['cargo', 'rls']
+    let g:ale_linters.rust = []
     " let g:ale_rust_rls_toolchain = 'stable'
 
     let g:ale_cpp_cc_options = '-std=c++17 -Wall'
