@@ -18,7 +18,6 @@ fi
 
 source ~/.powerlevel10k/powerlevel10k.zsh-theme
 
-
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -133,6 +132,21 @@ export GPG_TTY=$TTY
 
 
 export PATH=$PATH:/home/viper/.local/bin
+
+# Change the path to your mingw bin files if different
+# The check is reduntant however makes it so there is no error if adding this .zshrc
+# to your system.
+if [ -d /mnt/c/dev/MinGW/ ]; then
+    export PATH=$PATH:/mnt/c/dev/MinGW/bin
+fi
+
+if [ -d /home/$USER/.cargo/bin/ ]; then
+    export PATH=$PATH:/home/$USER/.cargo/bin
+fi
+
+if [ -d /mnt/c/Program\ Files/Microsoft\ Visual\ Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin ]; then
+    export PATH=$PATH:/mnt/c/Program\ Files/Microsoft\ Visual\ Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin 
+fi
 
 export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0 #GWSL
 export PULSE_SERVER=tcp:$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}') #GWSL
