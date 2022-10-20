@@ -94,6 +94,7 @@ set omnifunc=syntaxcomplete#Complete
 set termguicolors
 set fillchars+=stlnc:-
 set fillchars+=stl:-
+set updatetime=300
 if !has('nvim')
     set ttymouse=sgr
     set signcolumn=number
@@ -169,6 +170,9 @@ nnoremap k gk
 
     let g:ale_linters = {'cpp': ['gcc']}
 
+    " let g:ale_linters.rust = ['cargo', 'rls']
+    " let g:ale_rust_rls_toolchain = 'stable'
+
     let g:ale_cpp_cc_options = '-std=c++17 -Wall'
     let g:ale_c_parse_compile_commands = 1
     " Keep in mind that the parse make file for gcc linter will not work with MinGW
@@ -198,16 +202,12 @@ nnoremap k gk
         silent !touch ~/.config/nvim/coc-settings.json
         silent !echo "{\n\t\"diagnostic.displayByAle\": true,\n\t\"diagnostic.enable\": true,\n\t\"clangd.path\": \"~/.config/coc/extensions/coc-clangd-data/install/12.0.0/clangd_12.0.0/bin/clangd\"\n}" > ~/.config/nvim/coc-settings.json
     endif
-    let g:coc_global_extensions = ['coc-clangd', 'coc-html', 'coc-pyright', 'coc-json', 'coc-omnisharp', 'coc-sh', 'coc-tsserver', 'coc-cmake', 'coc-java', 'coc-glslx', 'coc-marketplace', 'coc-vimlsp', 'coc-emmet']
+    let g:coc_global_extensions = ['coc-clangd', 'coc-html', 'coc-pyright', 'coc-json', 'coc-omnisharp', 'coc-sh', 'coc-tsserver', 'coc-cmake', 'coc-java', 'coc-glslx', 'coc-marketplace', 'coc-vimlsp', 'coc-emmet', 'coc-rust-analyzer']
     function! s:check_back_space() abort
       let col = col('.') - 1
       return !col || getline('.')[col - 1]  =~# '\s'
     endfunction
-    nmap <silent> gd <Plug>(coc-definition)
-    nmap <silent> gy <Plug>(coc-type-definition)
-    nmap <silent> gi <Plug>(coc-implementation)
-    nmap <silent> gr <Plug>(coc-references)
-    nmap <silent> K :call <SID>show_documentation()<CR>
+
 
     " Function that allows shifted K to show documentation in a popup window.
     function! s:show_documentation()
@@ -220,17 +220,28 @@ nnoremap k gk
       endif
     endfunction
     autocmd CursorHold * silent call CocActionAsync('highlight')
+
+    nmap <silent> gd <Plug>(coc-definition)
+    nmap <silent> gy <Plug>(coc-type-definition)
+    nmap <silent> gi <Plug>(coc-implementation)
+    nmap <silent> gr <Plug>(coc-references)
+    nmap <silent> K :call <SID>show_documentation()<CR>
     nnoremap \rn <Plug>(coc-rename)
-    inoremap <silent><expr> <CR> pumvisible() ? coc#_select_confirm()
+
+    inoremap <silent><expr> <TAB> pumvisible() ? coc#_select_confirm()
       \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+
+    
+
 
     " Airline Settings
     let g:airline#extensions#tabline#enabled = 1
     let g:python_highlight_space_errors = 0
 
     " SuperTab Settings
-    let g:SuperTabContextDefaultCompletionType = "<c-x><c-o>"
-    let g:SuperTabDefaultCompletionType = "context"
+    " let g:SuperTabContextDefaultCompletionType = "<c-x><c-o>"
+    " let g:SuperTabDefaultCompletionType = "context"
 
     " Vimspector Settings
     let g:vimspector_enable_mappings = 'HUMAN'
@@ -259,7 +270,7 @@ nnoremap k gk
     nnoremap ;f :Files<CR>
 
     " Tagbar Settings
-    autocmd vimenter * Tagbar
+    " autocmd vimenter * Tagbar
     nnoremap \t :TagbarToggle<CR>
 
     " Polyglot Settings
@@ -289,10 +300,10 @@ nnoremap k gk
         Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
         Plug 'danymat/neogen'
     endif
+    Plug 'jiangmiao/auto-pairs'
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'dense-analysis/ale'
     Plug 'sheerun/vim-polyglot'
-    Plug 'jiangmiao/auto-pairs'
     Plug 'Valloric/ListToggle'
     Plug 'editorconfig/editorconfig-vim'
     Plug 'tmhedberg/simpylfold'
@@ -303,7 +314,7 @@ nnoremap k gk
     Plug 'preservim/nerdcommenter'
     Plug 'Xuyuanp/nerdtree-git-plugin'
     Plug 'habamax/vim-asciidoctor'
-    Plug 'https://github.com/ervandew/supertab.git'
+    " Plug 'https://github.com/ervandew/supertab.git'
     Plug 'puremourning/vimspector'
     Plug 'preservim/tagbar'
     Plug 'Yggdroot/indentLine'
