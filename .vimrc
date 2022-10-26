@@ -8,6 +8,8 @@
 "
 " \l            (List Toggle) Toggle Location List (The list at the bottom of
 "                     the screen that tells you what errors you have)
+"
+" <CR>          (Coc) Command Completion
 " gd            (Coc) Go to Definition
 " gy            (Coc) Go to type definition
 " gi            (Coc) Go to implementation
@@ -228,10 +230,21 @@ nnoremap k gk
     nmap <silent> K :call <SID>show_documentation()<CR>
     nnoremap \rn <Plug>(coc-rename)
 
-    inoremap <silent><expr> <TAB> pumvisible() ? coc#_select_confirm()
-      \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+    inoremap <silent><expr> <TAB>
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
+    inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+    inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 
+    function! CheckBackspace() abort
+      let col = col('.') - 1
+      return !col || getline('.')[col - 1]  =~# '\s'
+    endfunction
     
 
 
