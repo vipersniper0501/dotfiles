@@ -1,5 +1,4 @@
-" If using with neovim and this vimrc is not being used, check to make sure
-" your init.vim file exists (~/.config/nvim/init.vim) and points to this file as source.
+" If using with neovim and this vimrc is not being used, check to make sure your init.vim file exists (~/.config/nvim/init.vim) and points to this file as source.
 "
 "
 "
@@ -20,14 +19,15 @@
 "                     expect from an IDE (renames a variable/function in all 
 "                     occurrunces)
 "
-" <F5>          (Vimspector) Start/Continue Debugging
-" <F3>          (Vimspector) Stop Debugging
+" <F2>          (Vimspector) Quit Debugging (VimspectorReset)
+" <F3>          (Vimspector) Stop Debugging (VimspectorStop)
 " <F4>          (Vimspector) Restart Debugging with same configuration
+" <F5>          (Vimspector) Start/Continue Debugging
 " <F6>          (Vimspector) Pause Debugger
-" <F9>          (Vimspector) Toggle line breakpoint or logpoint on the current
-"                            line
-" <F8>          (Vimspector) Add a function breakpoint for the expression
+" <F8>          (Vimspector) Add a *function* breakpoint for the expression
 "                            under the cursor
+" <F9>          (Vimspector) Toggle _line_ breakpoint or logpoint on the current
+"                            line
 " <F10>         (Vimspector) Step Over
 " <F11>         (Vimspector) Step Into
 " <F12>         (Vimspector) Step Out
@@ -305,6 +305,10 @@ nnoremap k gk
     " https://github.com/christoomey/vim-tmux-navigator#tmux
 
 
+    " Indent Line settings
+    
+    let g:vim_json_conceal=0
+    let g:markdown_syntax_conceal=0
 
     " NOTE: Treesitter Settings at bottom of file
 
