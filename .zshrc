@@ -121,7 +121,8 @@ plugins=(git)
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias python="python3.9"
 alias dotfile_config="/usr/bin/git --git-dir=$HOME/.dot_cfg/.git --work-tree=$HOME"
-alias ll="ls -la"
+alias ll="ls -la --color=auto"
+alias ls="ls --color=auto"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
