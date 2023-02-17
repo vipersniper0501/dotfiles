@@ -121,7 +121,8 @@ plugins=(git)
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias python="python3.9"
 alias dotfile_config="/usr/bin/git --git-dir=$HOME/.dot_cfg/.git --work-tree=$HOME"
-alias ll="ls -la"
+alias ll="ls -la --color=auto"
+alias ls="ls --color=auto"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -155,8 +156,12 @@ if [ -d /mnt/c/Program\ Files/Microsoft\ Visual\ Studio/2022/Community/Common7/I
     export PATH=$PATH:/mnt/c/Program\ Files/Microsoft\ Visual\ Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin 
 fi
 
-export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0 #GWSL
-export PULSE_SERVER=tcp:$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}') #GWSL
+# If you are using GWSL and not using Windows 11 and not using WSL Version 2 for your 
+# linux distrobution, then uncomment the following two lines to enable the use of
+# GWSL for running linux gui applications.
+
+# export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0 #GWSL
+# export PULSE_SERVER=tcp:$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}') #GWSL
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
