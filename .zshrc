@@ -150,8 +150,12 @@ if [ -d /mnt/c/Program\ Files/Microsoft\ Visual\ Studio/2022/Community/Common7/I
     export PATH=$PATH:/mnt/c/Program\ Files/Microsoft\ Visual\ Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin 
 fi
 
-export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0 #GWSL
-export PULSE_SERVER=tcp:$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}') #GWSL
+# If you are using GWSL and not using Windows 11 and not using WSL Version 2 for your 
+# linux distrobution, then uncomment the following two lines to enable the use of
+# GWSL for running linux gui applications.
+
+# export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0 #GWSL
+# export PULSE_SERVER=tcp:$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}') #GWSL
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
