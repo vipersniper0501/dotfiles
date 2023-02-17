@@ -145,6 +145,12 @@ if [ -d /home/$USER/.cargo/bin/ ]; then
     export PATH=$PATH:/home/$USER/.cargo/bin
 fi
 
+# Note that ".ghidra_bin" is a custom name I gave to the ghidra folder 
+# containing the ghidraRun file.
+if [ -d /home/$USER/.ghidra_bin ]; then
+    export PATH=$PATH:/home/$USER/.ghidra_bin
+fi
+
 if [ -d /mnt/c/Program\ Files/Microsoft\ Visual\ Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin ]; then
     export PATH=$PATH:/mnt/c/Program\ Files/Microsoft\ Visual\ Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin 
 fi
