@@ -342,6 +342,7 @@ nnoremap k gk
 
     if has('nvim-0.6')
         Plug 'stevearc/dressing.nvim'
+        " Plug 'github/copilot.vim'
     endif
 
     " Color Themes
