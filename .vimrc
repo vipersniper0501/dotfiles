@@ -14,7 +14,8 @@
 " gi            (Coc) Go to implementation
 " gr            (Coc) Go to references
 " K             (Coc) Shows documentation for function/var/type/whatever is
-"                     under your cursor in a nice little popup window.
+"                     under your cursor in a nice little popup window. Note
+"                     that the K key mapping is Shift-k if that wasn't clear.
 " \rn           (Coc) Performs a rename of a variable much like you would
 "                     expect from an IDE (renames a variable/function in all 
 "                     occurrunces)
