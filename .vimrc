@@ -307,9 +307,13 @@ nnoremap k gk
 
 
     " Indent Line settings
-    
     let g:vim_json_conceal=0
     let g:markdown_syntax_conceal=0
+
+    " Indent blankline settings
+    let g:indent_blankline_char = '¦'
+    let g:indent_blankline_use_treesitter = v:true
+    let g:indent_blankline_show_trailing_blankline_indent = v:false
 
     " NOTE: Treesitter Settings at bottom of file
 
@@ -335,7 +339,13 @@ nnoremap k gk
     " Plug 'https://github.com/ervandew/supertab.git'
     Plug 'puremourning/vimspector'
     Plug 'preservim/tagbar'
-    Plug 'Yggdroot/indentLine'
+    
+    " Use indentLine for vim
+    " Plug 'Yggdroot/indentLine'
+    
+    " Use indent_blankline for neovim
+    Plug 'lukas-reineke/indent-blankline.nvim'
+
     Plug 'tpope/vim-surround'
     Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
     Plug 'junegunn/fzf.vim'
