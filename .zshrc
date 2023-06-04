@@ -124,6 +124,11 @@ alias dotfile_config="/usr/bin/git --git-dir=$HOME/.dot_cfg/.git --work-tree=$HO
 alias ll="ls -la --color=auto"
 alias ls="ls --color=auto"
 
+# Comment this out if you are not using the appimage version of neovim
+if [ -e /home/$USER/appimages/nvim.appimage ]; then
+    alias nvim="/home/$USER/appimages/nvim.appimage"
+fi
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 

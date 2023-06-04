@@ -17,3 +17,5 @@ that are not in the repo).
 
 If you wanted to add a file to the repo just run `dotfile_config add <file>` just
 like you would in any other repo and commit away.
+
+Instructions for configuring Tmux are found in the .tmux.conf file.
