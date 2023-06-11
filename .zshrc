@@ -124,6 +124,10 @@ alias dotfile_config="/usr/bin/git --git-dir=$HOME/.dot_cfg/.git --work-tree=$HO
 alias ll="ls -la --color=auto"
 alias ls="ls --color=auto"
 
+if [ -d ~/.my_bin ]; then
+    alias nvim="~/.my_bin/nvim.appimage"
+fi
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
