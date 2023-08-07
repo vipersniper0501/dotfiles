@@ -328,7 +328,7 @@ nnoremap k gk
     Plug 'sheerun/vim-polyglot'
     Plug 'Valloric/ListToggle'
     Plug 'editorconfig/editorconfig-vim'
-    Plug 'tmhedberg/simpylfold'
+    " Plug 'tmhedberg/simpylfold'
     Plug 'airblade/vim-gitgutter'
     Plug 'ryanoasis/vim-devicons'
     Plug 'vim-airline/vim-airline'
