@@ -1,7 +1,5 @@
 " If using with neovim and this vimrc is not being used, check to make sure your init.vim file exists (~/.config/nvim/init.vim) and points to this file as source.
 "
-"
-"
 " Current Custom Key Binds:
 "
 "
