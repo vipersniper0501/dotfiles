@@ -203,7 +203,7 @@ nnoremap k gk
         silent !touch ~/.config/nvim/coc-settings.json
         silent !echo "{\n\t\"diagnostic.displayByAle\": true,\n\t\"diagnostic.enable\": true,\n\t\"clangd.path\": \"~/.config/coc/extensions/coc-clangd-data/install/12.0.0/clangd_12.0.0/bin/clangd\"\n}" > ~/.config/nvim/coc-settings.json
     endif
-    let g:coc_global_extensions = ['coc-clangd', 'coc-html', 'coc-pyright', 'coc-json', 'coc-omnisharp', 'coc-sh', 'coc-tsserver', 'coc-cmake', 'coc-java', 'coc-glslx', 'coc-marketplace', 'coc-vimlsp', 'coc-emmet', 'coc-rust-analyzer']
+    let g:coc_global_extensions = ['coc-clangd', 'coc-html', 'coc-pyright', 'coc-json', 'coc-omnisharp', 'coc-sh', 'coc-tsserver', 'coc-cmake', 'coc-java', 'coc-glslx', 'coc-marketplace', 'coc-vimlsp', 'coc-emmet', 'coc-rust-analyzer', 'coc-java-vimspector', 'coc-angular', 'coc-scssmodules', 'coc-css']
     function! s:check_back_space() abort
       let col = col('.') - 1
       return !col || getline('.')[col - 1]  =~# '\s'
@@ -372,7 +372,7 @@ require('neogen').setup {
     enabled = true
 }
 require('nvim-treesitter.configs').setup { 
-    ensure_installed = {"cmake", "python", "json", "cpp", "java", "javascript", "css", "c", "jsdoc", "make", "markdown", "html", "typescript", "ruby", "rust", "vim", "bash", "c_sharp"}, 
+    ensure_installed = {"cmake", "python", "json", "cpp", "java", "javascript", "css", "c", "jsdoc", "make", "markdown", "html", "typescript", "tsx", "ruby", "rust", "vim", "bash", "c_sharp", "scss"}, 
     highlight = { enable = true } 
 }
 
