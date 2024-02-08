@@ -136,244 +136,245 @@ nnoremap k gk
 " For some reason when this is turned on vim plug doesn't work.
 "if filereadable("/home/viper/.vim/autoload/plug.vim")
 
-    " Color schemes
-    colorscheme sonokai
-    " colorscheme onedark
+" Color schemes
+colorscheme sonokai
+" colorscheme onedark
 
 
-    autocmd BufNew,BufRead *.s set ft=gas
+autocmd BufNew,BufRead *.s set ft=gas
 
-    " Syntastic Settings // Deprecated and no longer used. ALE is recommended
-    " instead.
-    let g:syntastic_always_populate_loc_list = 1
-    let g:syntastic_auto_loc_list = 1
-    let g:syntastic_check_on_open = 1
-    " let g:syntastic_python_checkers = ['flake8', 'pyflakes', 'pylint']
-    let g:syntastic_python_checkers = []
-    let g:syntastic_quiet_messages = { "type": "style" }
+" Syntastic Settings // Deprecated and no longer used. ALE is recommended
+" instead.
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+" let g:syntastic_python_checkers = ['flake8', 'pyflakes', 'pylint']
+let g:syntastic_python_checkers = []
+let g:syntastic_quiet_messages = { "type": "style" }
 
-    " ALE Settings
-    let g:ale_disable_lsp = 0
-    let g:ale_sign_column_always = 1
-    let g:airline#extensions#ale#enabled = 1
-    let g:ale_cache_executable_check_failures = 1
+" ALE Settings
+let g:ale_disable_lsp = 0
+let g:ale_sign_column_always = 1
+let g:airline#extensions#ale#enabled = 1
+let g:ale_cache_executable_check_failures = 1
 
-    let g:ale_open_list = 1
-    let g:ale_set_loclist = 1
-    let g:ale_set_quickfix = 0
+" Note: The open_list and set_loclist are very expensive performance wise.
+let g:ale_open_list = 0
+let g:ale_set_loclist = 0
+let g:ale_set_quickfix = 0
 
-    let g:ale_echo_msg_error_str = 'E'
-    let g:ale_echo_msg_warning_str = 'W'
-    let g:ale_echo_msg_format = '[%linter%] %code%: %s [%severity%]'
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %code%: %s [%severity%]'
 
-    let g:ale_python_pylint_use_msg_id = 1
-    let g:ale_python_flake8_options = '--ignore=E302, E303'
+let g:ale_python_pylint_use_msg_id = 1
+let g:ale_python_flake8_options = '--ignore=E302, E303'
 
-    let g:ale_linters = {'cpp': ['gcc']}
+let g:ale_linters = {'cpp': ['gcc']}
 
-    let g:ale_linters.rust = []
-    " let g:ale_rust_rls_toolchain = 'stable'
+let g:ale_linters.rust = []
+" let g:ale_rust_rls_toolchain = 'stable'
 
-    let g:ale_cpp_cc_options = '-std=c++17 -Wall'
-    let g:ale_c_parse_compile_commands = 1
-    " Keep in mind that the parse make file for gcc linter will not work with MinGW
-    let g:ale_c_parse_makefile = 1
-    let g:ale_c_build_dir_names = ['.', 'Build', 'build', 'bin']
-    autocmd QuitPre * if empty(&bt) | lclose | endif
+let g:ale_cpp_cc_options = '-std=c++17 -Wall'
+let g:ale_c_parse_compile_commands = 1
+" Keep in mind that the parse make file for gcc linter will not work with MinGW
+let g:ale_c_parse_makefile = 1
+let g:ale_c_build_dir_names = ['.', 'Build', 'build', 'bin']
+autocmd QuitPre * if empty(&bt) | lclose | endif
 
-    let g:ale_pattern_options = {
-                \        '.*\.asm$': {'ale_enabled': 0}
-                \}
-
-
-    " Valloric/List Toggle Settings
-    let g:lt_location_list_toggle_map = '\l'
-    let g:lt_height = 10
-
-    " YCM Settings
-    let g:ycm_show_diagnostics_ui = 0
-
-    " COC Settings
-    "
-    " Note: if you are not getting autocompletion for system commands when working
-    " with C/C++ code, make sure clangd is installed. Don't use the built in
-    " clangd. Make sure to type `:CocCommand clangd.install` while in C/C++ file.
-    if empty(glob('~/.config/nvim/coc-settings.json'))
-        echom "Setting up coc-settings.json"
-        silent !touch ~/.config/nvim/coc-settings.json
-        silent !echo "{\n\t\"diagnostic.displayByAle\": true,\n\t\"diagnostic.enable\": true,\n\t\"clangd.path\": \"~/.config/coc/extensions/coc-clangd-data/install/12.0.0/clangd_12.0.0/bin/clangd\"\n}" > ~/.config/nvim/coc-settings.json
-    endif
-    let g:coc_global_extensions = ['coc-clangd', 'coc-html', 'coc-pyright', 'coc-json', 'coc-omnisharp', 'coc-sh', 'coc-tsserver', 'coc-cmake', 'coc-java', 'coc-glslx', 'coc-marketplace', 'coc-vimlsp', 'coc-emmet', 'coc-rust-analyzer', 'coc-java-vimspector', 'coc-angular', 'coc-scssmodules', 'coc-css']
-    function! s:check_back_space() abort
-      let col = col('.') - 1
-      return !col || getline('.')[col - 1]  =~# '\s'
-    endfunction
+let g:ale_pattern_options = {
+            \        '.*\.asm$': {'ale_enabled': 0}
+            \}
 
 
-    " Function that allows shifted K to show documentation in a popup window.
-    function! s:show_documentation()
-      if (index(['vim','help'], &filetype) >= 0)
-        execute 'h '.expand('<cword>')
-      elseif (coc#rpc#ready())
-        call CocActionAsync('doHover')
-      else
-        execute '!' . &keywordprg . " " . expand('<cword>')
-      endif
-    endfunction
-    autocmd CursorHold * silent call CocActionAsync('highlight')
+" Valloric/List Toggle Settings
+let g:lt_location_list_toggle_map = '\l'
+let g:lt_height = 10
 
-    nmap <silent> gd <Plug>(coc-definition)
-    nmap <silent> gy <Plug>(coc-type-definition)
-    nmap <silent> gi <Plug>(coc-implementation)
-    nmap <silent> gr <Plug>(coc-references)
-    nmap <silent> K :call <SID>show_documentation()<CR>
-    nnoremap \rn <Plug>(coc-rename)
+" YCM Settings
+let g:ycm_show_diagnostics_ui = 0
 
-
-    inoremap <silent><expr> <TAB>
-      \ coc#pum#visible() ? coc#pum#next(1) :
-      \ CheckBackspace() ? "\<Tab>" :
-      \ coc#refresh()
-    inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
-
-    inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+" COC Settings
+"
+" Note: if you are not getting autocompletion for system commands when working
+" with C/C++ code, make sure clangd is installed. Don't use the built in
+" clangd. Make sure to type `:CocCommand clangd.install` while in C/C++ file.
+if empty(glob('~/.config/nvim/coc-settings.json'))
+    echom "Setting up coc-settings.json"
+    silent !touch ~/.config/nvim/coc-settings.json
+    silent !echo "{\n\t\"diagnostic.displayByAle\": true,\n\t\"diagnostic.enable\": true,\n\t\"clangd.path\": \"~/.config/coc/extensions/coc-clangd-data/install/12.0.0/clangd_12.0.0/bin/clangd\"\n}" > ~/.config/nvim/coc-settings.json
+endif
+let g:coc_global_extensions = ['coc-clangd', 'coc-html', 'coc-pyright', 'coc-json', 'coc-omnisharp', 'coc-sh', 'coc-tsserver', 'coc-cmake', 'coc-java', 'coc-glslx', 'coc-marketplace', 'coc-vimlsp', 'coc-emmet', 'coc-rust-analyzer', 'coc-java-vimspector', 'coc-angular', 'coc-scssmodules', 'coc-css', 'coc-go']
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
 
 
-    function! CheckBackspace() abort
-      let col = col('.') - 1
-      return !col || getline('.')[col - 1]  =~# '\s'
-    endfunction
-    
+" Function that allows shifted K to show documentation in a popup window.
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nmap <silent> K :call <SID>show_documentation()<CR>
+nnoremap \rn <Plug>(coc-rename)
 
 
-    " Airline Settings
-    let g:airline#extensions#tabline#enabled = 1
-    let g:python_highlight_space_errors = 0
+inoremap <silent><expr> <TAB>
+  \ coc#pum#visible() ? coc#pum#next(1) :
+  \ CheckBackspace() ? "\<Tab>" :
+  \ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
-    " SuperTab Settings
-    " let g:SuperTabContextDefaultCompletionType = "<c-x><c-o>"
-    " let g:SuperTabDefaultCompletionType = "context"
-
-    " Vimspector Settings
-    let g:vimspector_enable_mappings = 'HUMAN'
-    let g:vimspector_install_gadgets = ['debugpy', 'vscode-cpptools', 'CodeLLDB', 'vscode-java-debug', 'vscode-java-language-server']
-    let g:vimspector_sign_priority = {
-                \ 'vimspectorBP':               997,
-                \ 'vimspectorBPCond':           997,
-                \ 'vimspectorBPLog':            997,
-                \ 'vimspectorBPDisabled':       997,
-                \ 'vimspectorPC':               998,
-                \ 'vimspectorPCBP':             999,
-                \ 'vimspectorCurrentThread':    997,
-                \ 'vimspectorCurrentFrame':     997,
-                \}
-    nnoremap <F2> :VimspectorReset<CR>
-    nmap \di <Plug>VimspectorBalloonEval
-
-    " NERD Settings
-    let g:NERDCreateDefaultMappings = 1
-    let g:NERDSpaceDelims = 1
-    let g:NERDTrimTrailingWhitespace = 1
-    nnoremap \n :NERDTreeToggle<CR>
-
-    " Fuzzy Finder Settings
-    let g:fzf_preview_window = ['right:50%', 'ctrl-/']
-    nnoremap ;f :Files<CR>
-
-    " Tagbar Settings
-    " autocmd vimenter * Tagbar
-    nnoremap \t :TagbarToggle<CR>
-
-    " Polyglot Settings
-    let g:polyglot_disabled = ['autoindent']
-
-    " GitGutter Settings
-    highlight GitGutterAdd guifg=#00ff00 ctermfg=2 ctermbg=236
-    highlight GitGutterDelete guifg=#ff0000 ctermfg=1 ctermbg=236
-    highlight GitGutterChange guifg=#ffff00 ctermfg=3 ctermbg=236
-    highlight linenr ctermfg=8 ctermbg=16
-    set colorcolumn=80
-    highlight ColorColumn ctermbg=0 guibg=#4C4F5A
-    autocmd vimenter * GitGutterEnable
-    autocmd BufWritePost * GitGutter
-
-    " tmux settings
-    " If you want proper interaction between tmux and vim/neovim make sure to have
-    " your tmux.conf look like what is provided at
-    " https://github.com/christoomey/vim-tmux-navigator#tmux
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                          \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 
-    " Indent Line settings
-    let g:vim_json_conceal=0
-    let g:markdown_syntax_conceal=0
-
-    " Indent blankline settings
-    let g:indent_blankline_char = '¦'
-    let g:indent_blankline_use_treesitter = v:true
-    let g:indent_blankline_show_trailing_blankline_indent = v:false
-
-    " NOTE: Treesitter Settings at bottom of file
-
-    call plug#begin('~/.vim/plugged')
-    if has('nvim-0.5')
-        Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-        Plug 'danymat/neogen'
-    endif
-    Plug 'jiangmiao/auto-pairs'
-    Plug 'neoclide/coc.nvim', {'branch': 'release'}
-    Plug 'dense-analysis/ale'
-    Plug 'sheerun/vim-polyglot'
-    Plug 'Valloric/ListToggle'
-    Plug 'editorconfig/editorconfig-vim'
-    " Plug 'tmhedberg/simpylfold'
-    Plug 'airblade/vim-gitgutter'
-    Plug 'ryanoasis/vim-devicons'
-    Plug 'vim-airline/vim-airline'
-    Plug 'preservim/nerdtree'
-    Plug 'preservim/nerdcommenter'
-    Plug 'Xuyuanp/nerdtree-git-plugin'
-    Plug 'habamax/vim-asciidoctor'
-    " Plug 'https://github.com/ervandew/supertab.git'
-    Plug 'puremourning/vimspector'
-    Plug 'preservim/tagbar'
-    
-    " Use indentLine for vim
-    " Plug 'Yggdroot/indentLine'
-    
-    " Use indent_blankline for neovim
-    Plug 'lukas-reineke/indent-blankline.nvim'
-
-    Plug 'tpope/vim-surround'
-    Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
-    Plug 'junegunn/fzf.vim'
-    Plug 'christoomey/vim-tmux-navigator'
-
-    if has('nvim-0.6')
-        Plug 'stevearc/dressing.nvim'
-        " Plug 'github/copilot.vim'
-    endif
-
-    " Color Themes
-    Plug 'Shirk/vim-gas'
-    Plug 'sainnhe/sonokai'
-    Plug 'joshdick/onedark.vim'
-
-    call plug#end()
+function! CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
 
 
 
-    " Ensures that the editor is neovim and version greater than 0.5 to use lua
-    " and related plugins.
-    if has('nvim-0.5')
+" Airline Settings
+let g:airline#extensions#tabline#enabled = 1
+let g:python_highlight_space_errors = 0
+
+" SuperTab Settings
+" let g:SuperTabContextDefaultCompletionType = "<c-x><c-o>"
+" let g:SuperTabDefaultCompletionType = "context"
+
+" Vimspector Settings
+let g:vimspector_enable_mappings = 'HUMAN'
+let g:vimspector_install_gadgets = ['debugpy', 'vscode-cpptools', 'CodeLLDB', 'vscode-java-debug', 'vscode-java-language-server']
+let g:vimspector_sign_priority = {
+            \ 'vimspectorBP':               997,
+            \ 'vimspectorBPCond':           997,
+            \ 'vimspectorBPLog':            997,
+            \ 'vimspectorBPDisabled':       997,
+            \ 'vimspectorPC':               998,
+            \ 'vimspectorPCBP':             999,
+            \ 'vimspectorCurrentThread':    997,
+            \ 'vimspectorCurrentFrame':     997,
+            \}
+nnoremap <F2> :VimspectorReset<CR>
+nmap \di <Plug>VimspectorBalloonEval
+
+" NERD Settings
+let g:NERDCreateDefaultMappings = 1
+let g:NERDSpaceDelims = 1
+let g:NERDTrimTrailingWhitespace = 1
+nnoremap \n :NERDTreeToggle<CR>
+
+" Fuzzy Finder Settings
+let g:fzf_preview_window = ['right:50%', 'ctrl-/']
+nnoremap ;f :Files<CR>
+
+" Tagbar Settings
+" autocmd vimenter * Tagbar
+nnoremap \t :TagbarToggle<CR>
+
+" Polyglot Settings
+let g:polyglot_disabled = ['autoindent']
+
+" GitGutter Settings
+highlight GitGutterAdd guifg=#00ff00 ctermfg=2 ctermbg=236
+highlight GitGutterDelete guifg=#ff0000 ctermfg=1 ctermbg=236
+highlight GitGutterChange guifg=#ffff00 ctermfg=3 ctermbg=236
+highlight linenr ctermfg=8 ctermbg=16
+set colorcolumn=80
+highlight ColorColumn ctermbg=0 guibg=#4C4F5A
+autocmd vimenter * GitGutterEnable
+autocmd BufWritePost * GitGutter
+
+" tmux settings
+" If you want proper interaction between tmux and vim/neovim make sure to have
+" your tmux.conf look like what is provided at
+" https://github.com/christoomey/vim-tmux-navigator#tmux
+
+
+" Indent Line settings
+let g:vim_json_conceal=0
+let g:markdown_syntax_conceal=0
+
+" Indent blankline settings
+let g:indent_blankline_char = '¦'
+let g:indent_blankline_use_treesitter = v:true
+let g:indent_blankline_show_trailing_blankline_indent = v:false
+
+" NOTE: Treesitter Settings at bottom of file
+
+call plug#begin('~/.vim/plugged')
+if has('nvim-0.5')
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+    Plug 'danymat/neogen'
+endif
+Plug 'jiangmiao/auto-pairs'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'dense-analysis/ale'
+" Plug 'sheerun/vim-polyglot'
+Plug 'Valloric/ListToggle'
+Plug 'editorconfig/editorconfig-vim'
+" Plug 'tmhedberg/simpylfold'
+Plug 'airblade/vim-gitgutter'
+Plug 'ryanoasis/vim-devicons'
+Plug 'vim-airline/vim-airline'
+Plug 'preservim/nerdtree'
+Plug 'preservim/nerdcommenter'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'habamax/vim-asciidoctor'
+" Plug 'https://github.com/ervandew/supertab.git'
+Plug 'puremourning/vimspector'
+Plug 'preservim/tagbar'
+
+" Use indentLine for vim
+" Plug 'Yggdroot/indentLine'
+
+" Use indent_blankline for neovim
+Plug 'lukas-reineke/indent-blankline.nvim', {'tag': 'v2.20.8'}
+
+Plug 'tpope/vim-surround'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
+Plug 'junegunn/fzf.vim'
+Plug 'christoomey/vim-tmux-navigator'
+
+if has('nvim-0.6')
+    Plug 'stevearc/dressing.nvim'
+    " Plug 'github/copilot.vim'
+endif
+
+" Color Themes
+Plug 'Shirk/vim-gas'
+Plug 'sainnhe/sonokai'
+Plug 'joshdick/onedark.vim'
+
+call plug#end()
+
+
+
+" Ensures that the editor is neovim and version greater than 0.5 to use lua
+" and related plugins.
+if has('nvim-0.5')
 
 lua << EOF
 require('neogen').setup {
-    enabled = true
+enabled = true
 }
 require('nvim-treesitter.configs').setup { 
-    ensure_installed = {"cmake", "python", "json", "cpp", "java", "javascript", "css", "c", "jsdoc", "make", "markdown", "html", "typescript", "tsx", "ruby", "rust", "vim", "bash", "c_sharp", "scss"}, 
-    highlight = { enable = true } 
+ensure_installed = {"cmake", "python", "json", "cpp", "java", "javascript", "css", "c", "jsdoc", "make", "markdown", "html", "typescript", "tsx", "ruby", "rust", "vim", "bash", "c_sharp", "scss", "go"}, 
+highlight = { enable = true } 
 }
 
 -- Neogen Settings
@@ -383,6 +384,6 @@ vim.api.nvim_set_keymap("n", "\\nd", ":lua require('neogen').generate()<CR>", op
 
 EOF
 
-    endif
+endif
 
 "endif
