@@ -1,22 +1,22 @@
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
+# if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  # source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+# fi
 
 #if [ ! -d ~/.oh-my-zsh ]; then
 #    echo "oh-my-zsh is not installed. Installing now"
 #    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 #fi
 
-if [ ! -d ~/.powerlevel10k/ ]; then
-    echo "powerlevel10k is not installed. Installing now"
-    #git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.powerlevel10k
-fi
+# if [ ! -d ~/.powerlevel10k/ ]; then
+    # echo "powerlevel10k is not installed. Installing now"
+    # #git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+    # git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.powerlevel10k
+# fi
 
-source ~/.powerlevel10k/powerlevel10k.zsh-theme
+# source ~/.powerlevel10k/powerlevel10k.zsh-theme
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
@@ -124,8 +124,18 @@ alias dotfile_config="/usr/bin/git --git-dir=$HOME/.dot_cfg/.git --work-tree=$HO
 alias ll="ls -la --color=auto"
 alias ls="ls --color=auto"
 
-if [ -d ~/.my_bin ]; then
+
+HISTFILE=~/.zsh_history
+HISTSIZE=1000
+SAVEHIST=1000
+setopt appendhistory
+
+
+if [ -d /home/$USER/.my_bin ]; then
     alias nvim="~/.my_bin/nvim.appimage"
+    if [ -d /home/$USER/.my_bin/go ]; then 
+        export PATH=$PATH:/home/$USER/.my_bin/go/bin
+    fi
 fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
@@ -137,7 +147,7 @@ export EDITOR="$VISUAL"
 export GPG_TTY=$TTY
 
 
-export PATH=$PATH:/home/viper/.local/bin
+export PATH=$PATH:/home/$USER/.local/bin
 
 # Change the path to your mingw bin files if different
 # The check is reduntant however makes it so there is no error if adding this .zshrc
@@ -156,9 +166,18 @@ if [ -d /home/$USER/.ghidra_bin ]; then
     export PATH=$PATH:/home/$USER/.ghidra_bin
 fi
 
+if [ -d /usr/local/cuda-12.3/bin ]; then
+    export PATH=$PATH:/usr/local/cuda-12.3/bin
+fi
+
 if [ -d /mnt/c/Program\ Files/Microsoft\ Visual\ Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin ]; then
     export PATH=$PATH:/mnt/c/Program\ Files/Microsoft\ Visual\ Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin 
 fi
+
+if [ -d /usr/local/go ]; then
+    export PATH=$PATH:/usr/local/go/bin
+fi
+
 
 # If you are using GWSL and not using Windows 11 and not using WSL Version 2 for your 
 # linux distrobution, then uncomment the following two lines to enable the use of
@@ -170,3 +189,17 @@ fi
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+# export GIT_SSH_COMMAND="ssh -i ~/.ssh/mab7470"
+
+export CHROME_BIN=/mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe
+
+# Load Angular CLI autocompletion.
+source <(ng completion script)
+
+
+eval "$(starship init zsh)"
