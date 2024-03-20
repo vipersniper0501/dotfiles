@@ -98,6 +98,8 @@ set termguicolors
 set fillchars+=stlnc:-
 set fillchars+=stl:-
 set updatetime=300
+set list
+set noswapfile
 if !has('nvim')
     set ttymouse=sgr
     set signcolumn=number
@@ -340,6 +342,8 @@ Plug 'habamax/vim-asciidoctor'
 " Plug 'https://github.com/ervandew/supertab.git'
 Plug 'puremourning/vimspector'
 Plug 'preservim/tagbar'
+
+Plug 'nvim-lua/plenary.nvim'
 
 " Use indentLine for vim
 " Plug 'Yggdroot/indentLine'
