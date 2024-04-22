@@ -103,8 +103,10 @@ set noswapfile
 if !has('nvim')
     set ttymouse=sgr
     set signcolumn=number
+    " let g:sonokai_diagnostic_text_highlight=1
 endif
 
+let g:sonokai_diagnostic_virtual_text='colored'
 
 " Normal (Not Mode. Just general not plugin or neovim specific) Remappings
 nnoremap j gj
@@ -325,6 +327,14 @@ if has('nvim-0.5')
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
     Plug 'danymat/neogen'
 endif
+if has('nvim-0.6')
+    Plug 'stevearc/dressing.nvim'
+    " Plug 'github/copilot.vim'
+endif
+if has('nvim-0.9.4')
+    Plug 'JoosepAlviste/nvim-ts-context-commentstring'
+    Plug 'nvim-treesitter/nvim-treesitter-context'
+endif
 Plug 'jiangmiao/auto-pairs'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Plug 'dense-analysis/ale'
@@ -356,10 +366,6 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
 Plug 'junegunn/fzf.vim'
 Plug 'christoomey/vim-tmux-navigator'
 
-if has('nvim-0.6')
-    Plug 'stevearc/dressing.nvim'
-    " Plug 'github/copilot.vim'
-endif
 
 " Color Themes
 Plug 'Shirk/vim-gas'
@@ -379,8 +385,31 @@ require('neogen').setup {
 enabled = true
 }
 require('nvim-treesitter.configs').setup { 
-ensure_installed = {"cmake", "python", "json", "cpp", "java", "javascript", "css", "c", "jsdoc", "make", "markdown", "html", "typescript", "tsx", "ruby", "rust", "vim", "bash", "c_sharp", "scss", "go"}, 
-highlight = { enable = true } 
+ensure_installed = {"cmake", "python", "json", "cpp", "java", "javascript", 
+                    "css", "c", "jsdoc", "make", "markdown", "html", 
+                    "typescript", "tsx", "ruby", "rust", "vim", "bash", 
+                    "c_sharp", "scss", "go"}, 
+highlight = { enable = true },
+indent = {enable = true}
+}
+
+-- require('ts_context_commentstring').setup {
+--   enable_autocmd = false,
+-- }
+
+require'treesitter-context'.setup{
+  enable = false, -- Enable this plugin (Can be enabled/disabled later via commands)
+  max_lines = 1, -- How many lines the window should span. Values <= 0 mean no limit.
+  min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
+  line_numbers = true,
+  multiline_threshold = 20, -- Maximum number of lines to show for a single context
+  trim_scope = 'inner', -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
+  mode = 'topline',  -- Line used to calculate context. Choices: 'cursor', 'topline'
+  -- Separator between context and content. Should be a single character string, like '-'.
+  -- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
+  separator = nil,
+  zindex = 20, -- The Z-index of the context window
+  on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
 }
 
 -- Neogen Settings
