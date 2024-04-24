@@ -58,14 +58,17 @@ if empty(glob('~/.vim/autoload/plug.vim'))
     endif
     silent !curl -flo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-
+    " Note: Nothing can be run after this since source $MYVIMRC is run,
+    " reloading the vimrc file, which will now see that plug.vim exists,
+    " skipping this section entirely
+endif
+if !empty(glob('~/.vim/autoload/plug.vim'))
     if empty(glob('~/.vim/colors/sonokai.vim'))
-        echom "Setting up colorscheme..."
+        echom 'Setting up colorscheme...'
         silent !mkdir ~/.vim/colors
         silent !cp ~/.vim/plugged/sonokai/colors/sonokai.vim ~/.vim/colors/sonokai.vim
         silent !cp ~/.vim/plugged/sonokai/autoload/sonokai.vim ~/.vim/autoload/sonokai.vim
-        silent !cp ~/.vim/plugged/onedark/colors/onedark.vim ~/.vim/colors/onedark.vim
-        silent !cp ~/.vim/plugged/onedark/autoload/onedark.vim ~/.vim/autoload/onedark.vim
+        " Do something similar to above for onedark colorscheme
     endif
 endif
 
@@ -103,10 +106,10 @@ set noswapfile
 if !has('nvim')
     set ttymouse=sgr
     set signcolumn=number
-    " let g:sonokai_diagnostic_text_highlight=1
 endif
 
-let g:sonokai_diagnostic_virtual_text='colored'
+let g:sonokai_diagnostic_virtual_text = 'colored'
+let g:sonokai_better_performance = 0
 
 " Normal (Not Mode. Just general not plugin or neovim specific) Remappings
 nnoremap j gj
