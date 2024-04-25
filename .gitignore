@@ -1,0 +1,9 @@
+*
+
+!.zshrc
+!.vimrc
+!.tmux.conf
+!Readme.adoc
+!.p10k.zsh
+!.config/nvim/*
+!.gitignore
