@@ -120,7 +120,7 @@ plugins=(git)
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias python="python3.9"
-alias dotfile_config="/usr/bin/git --git-dir=$HOME/.dot_cfg/.git --work-tree=$HOME"
+alias dotfile_config="git --git-dir=$HOME/.dot_cfg/.git --work-tree=$HOME"
 alias ll="ls -la --color=auto"
 alias ls="ls --color=auto"
 
@@ -199,7 +199,7 @@ export SDKMAN_DIR="$HOME/.sdkman"
 export CHROME_BIN=/mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe
 
 # Load Angular CLI autocompletion.
-source <(ng completion script)
+#source <(ng completion script)
 
 
 eval "$(starship init zsh)"
