@@ -13,6 +13,8 @@
     },
     "suggest.floatConfig": {
         "border": true
-    }
+    },
+    "Lua.diagnostics.globals": ["vim"]
+
     
 }

@@ -318,7 +318,7 @@ autocmd BufWritePost * GitGutter
 let g:vim_json_conceal=0
 let g:markdown_syntax_conceal=0
 
-" Indent blankline settings
+" Indent blankline settings for v2.
 let g:indent_blankline_char = '¦'
 let g:indent_blankline_use_treesitter = v:true
 let g:indent_blankline_show_trailing_blankline_indent = v:false
@@ -384,6 +384,14 @@ call plug#end()
 if has('nvim-0.5')
 
 lua << EOF
+
+-- Required for version 3 of indent-blankline
+require('ibl').setup({
+    indent = {
+        char = "¦"
+    }
+})
+
 require('neogen').setup {
 enabled = true
 }
