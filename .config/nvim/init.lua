@@ -79,6 +79,7 @@ o.signcolumn = "number"
 vim.api.nvim_set_option_value("colorcolumn", "80", {})
 
 -- bootstrap lazyvim
+-- Note that lazyvim stores all files in: ~/.local/share/nvim/lazy
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   vim.fn.system({
@@ -101,7 +102,9 @@ plugins = {
     "JoosepAlviste/nvim-ts-context-commentstring",
     "nvim-treesitter/nvim-treesitter-context",
     "jiangmiao/auto-pairs",
-    "neoclide/coc.nvim",
+    {"neoclide/coc.nvim",
+        build = ":call coc#util#install()"
+    },
     "Valloric/ListToggle",
     "airblade/vim-gitgutter",
     "ryanoasis/vim-devicons",
@@ -120,8 +123,9 @@ plugins = {
     "preservim/nerdcommenter",
     "Xuyuanp/nerdtree-git-plugin",
     {"habamax/vim-asciidoctor", ft = {"adoc", "asciidoc"}},
-    {"puremourning/vimspector", lazy = true},
-    {"preservim/tagbar"},
+    {"puremourning/vimspector"},
+    -- Tagbar is disabled due to huge lag caused from loading
+    {"preservim/tagbar", enabled = false},
     "nvim-lua/plenary.nvim",
     "tpope/vim-surround",
     {"lukas-reineke/indent-blankline.nvim", main = "ibl"},
@@ -313,6 +317,7 @@ require('ibl').setup({
 local opts = { noremap = true, silent = true }
 vim.api.nvim_set_keymap("n", "\\nd", ":lua require('neogen').generate()<CR>", opts)
 
+vim.g.airline_highlighting_cache = 1
 
 
 
