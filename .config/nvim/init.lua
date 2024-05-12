@@ -124,8 +124,7 @@ plugins = {
     "Xuyuanp/nerdtree-git-plugin",
     {"habamax/vim-asciidoctor", ft = {"adoc", "asciidoc"}},
     {"puremourning/vimspector"},
-    -- Tagbar is disabled due to huge lag caused from loading
-    {"preservim/tagbar", enabled = false},
+    "liuchengxu/vista.vim",
     "nvim-lua/plenary.nvim",
     "tpope/vim-surround",
     {"lukas-reineke/indent-blankline.nvim", main = "ibl"},
@@ -261,8 +260,8 @@ vim.g.fzf_preview_window = {
 
 keyset("n", ";f", ":Files<CR>", {noremap = true})
 
--- Tagbar Settings
-keyset("n", "\\t", ":TagbarToggle<CR>", {noremap = true})
+-- Vista Settings (tagbar replacement)
+keyset("n", "\\t", ":Vista!!<CR>", {noremap = true})
 
 -- GitGutter Settings
 vim.api.nvim_create_autocmd("VimEnter", {
