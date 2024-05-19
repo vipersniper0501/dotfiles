@@ -1,11 +1,11 @@
 {
-	"diagnostic.displayByAle": false,
+    "diagnostic.displayByAle": false,
     "diagnostic.enable": true,
-    "diagnostic.virtualText": true,
-    "diagnostic.virtualTextCurrentLineOnly": false,
+    "diagnostic.virtualText": false,
+    "diagnostic.virtualTextCurrentLineOnly": true,
     "diagnostic.floatConfig": {},
-    "diagnostic.enableMessage": "never",
-	"clangd.path": "/home/viper/.config/coc/extensions/coc-clangd-data/install/12.0.0/clangd_12.0.0/bin/clangd",
+    "diagnostic.enableMessage": "jump",
+    "clangd.path": "/home/viper/.config/coc/extensions/coc-clangd-data/install/12.0.0/clangd_12.0.0/bin/clangd",
     "eslint.packageManager": "npm",
     "angular.view-engine": true,
     "floatFactory.floatConfig": {
@@ -20,5 +20,6 @@
         "$HOME/.cargo/**",
         "$HOME/.rustup/**"
     ],
+    "rust-analyzer.inlayHints.typeHints.enable": false,
 
 }

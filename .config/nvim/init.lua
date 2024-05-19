@@ -101,9 +101,10 @@ plugins = {
     "stevearc/dressing.nvim",
     "JoosepAlviste/nvim-ts-context-commentstring",
     "nvim-treesitter/nvim-treesitter-context",
-    "jiangmiao/auto-pairs",
+    -- "jiangmiao/auto-pairs",
     {"neoclide/coc.nvim",
-        build = ":call coc#util#install()"
+        branch = "release",
+        -- build = ":call coc#util#install()"
     },
     "Valloric/ListToggle",
     "airblade/vim-gitgutter",
@@ -128,8 +129,13 @@ plugins = {
     "nvim-lua/plenary.nvim",
     "tpope/vim-surround",
     {"lukas-reineke/indent-blankline.nvim", main = "ibl"},
-    {"junegunn/fzf", build = ":call fzf#install()"},
-    "junegunn/fzf.vim",
+    -- {"junegunn/fzf", build = ":call fzf#install()"},
+    -- "junegunn/fzf.vim",
+    {
+    'nvim-telescope/telescope.nvim', 
+        branch = '0.1.x',
+        dependencies = { 'nvim-lua/plenary.nvim' }
+    },
     -- Colorscheme
     {"sainnhe/sonokai",
         lazy = false,
@@ -175,7 +181,7 @@ vim.g.coc_global_extensions = {
     'coc-sh', 'coc-tsserver', 'coc-cmake', 'coc-java', 'coc-glslx',
     'coc-marketplace', 'coc-vimlsp', 'coc-emmet', 'coc-rust-analyzer',
     'coc-java-vimspector', 'coc-angular', 'coc-scssmodules', 'coc-css',
-    'coc-go', 'coc-lua'
+    'coc-go', 'coc-lua', 'coc-pairs'
 }
 
 -- Coc Autocomplete
@@ -222,6 +228,26 @@ vim.api.nvim_create_autocmd("CursorHold", {
     desc = "Highlight symbol under cursor on CursorHold"
 })
 
+vim.api.nvim_create_autocmd("CursorHold", {
+    group = "CocGroup",
+    command = "silent call CocActionAsync('diagnosticInfo')",
+    desc = "Show diagnostic error info on CursorHold"
+})
+
+
+
+-- vim.api.nvim_set_hl(
+    -- 0,
+    -- 'CocErrorHighlight',
+    -- {
+        -- underline = true,
+        -- ctermfg = "DarkRed",
+
+    -- }
+-- )
+
+keyset("n", "\\?", ":call CocAction('diagnosticInfo') <CR>", {noremap = true})
+
 -- Vimspector Settings
 
 vim.g.vimspector_enable_mappings = "HUMAN"
@@ -264,7 +290,14 @@ vim.g.fzf_preview_window = {
     "right:50%", "ctrl-/"
 }
 
-keyset("n", ";f", ":Files<CR>", {noremap = true})
+-- keyset("n", ";f", ":Files<CR>", {noremap = true})
+
+-- Telescope Settings
+local builtin = require('telescope.builtin')
+vim.keymap.set('n', ';ff', builtin.find_files, {})
+vim.keymap.set('n', ';fg', builtin.live_grep, {})
+vim.keymap.set('n', ';fb', builtin.buffers, {})
+vim.keymap.set('n', ';fh', builtin.help_tags, {})
 
 -- Vista Settings (tagbar replacement)
 keyset("n", "\\t", ":Vista!!<CR>", {noremap = true})
@@ -325,6 +358,7 @@ vim.api.nvim_set_keymap("n", "\\nd", ":lua require('neogen').generate()<CR>", op
 vim.g.airline_highlighting_cache = 1
 
 
+-- Custom Highlighting
 
-
-
+vim.cmd([[highlight CocErrorHighlight cterm=underline ctermfg=1 gui=undercurl guibg=#D05A42 guisp=#FF0000]])
+vim.cmd([[highlight CocWarningHighlight cterm=underline ctermfg=1 gui=undercurl guibg=#D05A42 guisp=#FF0000]])
