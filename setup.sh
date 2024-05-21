@@ -6,6 +6,7 @@ files=$(find . -type f \( ! -name "Readme.adoc" -a ! -name "setup.sh" -a ! -path
 
 mkdir $HOME/.config
 mkdir $HOME/.config/nvim
+mkdir $HOME/.config/foot
 
 for file in $files; do
 
