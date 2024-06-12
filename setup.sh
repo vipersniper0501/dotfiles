@@ -17,4 +17,17 @@ for file in $files; do
     echo "Created hard symlink '$target_path' pointing to '$PWD/$file'"
 done
 
+# Now do for root
+mkdir /root/.config
+mkdir /root/.config/nvim
+mkdir /root/.config/foot
+
+for file in $files; do
+
+    target_path="/root/$file"
+
+    ln -f "$PWD/$file" "$target_path"
+
+    echo "Created hard symlink '$target_path' pointing to '$PWD/$file'"
+done
 echo "Dotfile setup complete."
