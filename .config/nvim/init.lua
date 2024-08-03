@@ -118,7 +118,7 @@ plugins = {
             "nvim-lua/plenary.nvim",
             "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
             "MunifTanjim/nui.nvim",
-            "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
+            --"3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
         }
     },
     "preservim/nerdcommenter",
@@ -207,8 +207,17 @@ keyset("n", "gr", "<Plug>(coc-references)", {silent = true})
 -- Symbol renaming
 keyset("n", "<leader>rn", "<Plug>(coc-rename)", {silent = true})
 
+_G.shift_k_enabled = false
+
+vim.api.nvim_create_autocmd({"CursorMoved", "BufEnter"}, {
+    callback = function()
+        _G.shift_k_enabled = false
+    end
+})
+
 -- Use K to show documentation in preview window
 function _G.show_docs()
+    _G.shift_k_enabled = true
     local cw = vim.fn.expand('<cword>')
     if vim.fn.index({'vim', 'help'}, vim.bo.filetype) >= 0 then
         vim.api.nvim_command('h ' .. cw)
@@ -218,6 +227,7 @@ function _G.show_docs()
         vim.api.nvim_command('!' .. vim.o.keywordprg .. ' ' .. cw)
     end
 end
+
 keyset("n", "K", '<CMD>lua _G.show_docs()<CR>', {silent = true})
 
 -- Highlight the symbol and its references on a CursorHold event(cursor is idle)
@@ -230,7 +240,11 @@ vim.api.nvim_create_autocmd("CursorHold", {
 
 vim.api.nvim_create_autocmd("CursorHold", {
     group = "CocGroup",
-    command = "silent call CocActionAsync('diagnosticInfo')",
+    callback = function()
+        if not _G.shift_k_enabled then
+            vim.api.nvim_command("silent call CocActionAsync('diagnosticInfo')")
+        end
+    end,
     desc = "Show diagnostic error info on CursorHold"
 })
 
