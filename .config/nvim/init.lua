@@ -267,7 +267,7 @@ keyset("n", "\\?", ":call CocAction('diagnosticInfo') <CR>", {noremap = true})
 
 -- Vimspector Settings
 
-vim.g.vimspector_enable_mappings = "HUMAN"
+-- vim.g.vimspector_enable_mappings = "HUMAN"
 vim.g.vimspector_install_gadgets = {
     "debugpy", "vscode-cpptools", "CodeLLDB", "vscode-java-debug", "vscode-java-language-server"
 }
@@ -284,6 +284,17 @@ vim.g.vimscpector_sign_priority = {
 }
 
 keyset("n", "<F2>", ":VimspectorReset<CR>", {noremap = true})
+keyset("n", "<F3>", "<Plug>VimspectorStop", {noremap = true})
+keyset("n", "<F4>", "<Plug>VimspectorRestart", {noremap = true})
+keyset("n", "<F5>", "<Plug>VimspectorContinue", {noremap = true})
+keyset("n", "<F6>", "<Plug>VimspectorPause", {noremap = true})
+keyset("n", "<F8>", "<Plug>VimspectorAddFunctionBreakpoint", {noremap = true})
+keyset("n", "<F9>", "<Plug>VimspectorToggleBreakpoint", {noremap = true})
+keyset("n", "\\<F9>", "<Plug>VimspectorDisassemble", {noremap = true})
+keyset("n", "<F10>", "<Plug>VimspectorStepOver", {noremap = true})
+keyset("n", "<F11>", "<Plug>VimspectorStepInto", {noremap = true})
+keyset("n", "<F12>", "<Plug>VimspectorStepOut", {noremap = true})
+
 keyset("n", "\\di", "<Plug>VimspectorBalloonEval", {})
 
 -- NERD Tree Settings
@@ -379,3 +390,4 @@ vim.g.airline_highlighting_cache = 1
 
 vim.cmd([[highlight CocErrorHighlight cterm=underline ctermfg=1 gui=undercurl guibg=#D05A42 guisp=#FF0000]])
 vim.cmd([[highlight CocWarningHighlight cterm=underline ctermfg=1 gui=undercurl guibg=#D05A42 guisp=#FF0000]])
+
