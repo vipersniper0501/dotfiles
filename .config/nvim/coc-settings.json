@@ -1,4 +1,5 @@
 {
+    "inlayHint.enable": false,
     "diagnostic.displayByAle": false,
     "diagnostic.enable": true,
     "diagnostic.virtualText": false,
