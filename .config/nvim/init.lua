@@ -337,6 +337,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
 vim.api.nvim_create_autocmd("BufWritePost", {
     command = "GitGutter"
 })
+vim.g.gitgutter_sign_priority = 0
 
 -- Neogen Settings
 require('neogen').setup {
