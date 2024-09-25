@@ -22,5 +22,6 @@
         "$HOME/.rustup/**"
     ],
     "rust-analyzer.inlayHints.typeHints.enable": false,
+    "inlayHint.display": false
 
 }

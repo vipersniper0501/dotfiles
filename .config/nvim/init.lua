@@ -4,19 +4,17 @@
 --
 -- Current Custom Key Binds:
 --
+-- <leader>     ;
 --
--- \l            (List Toggle) Toggle Location List (The list at the bottom of
---                     the screen that tells you what errors you have)
---
---<CR>          (Coc) Command Completion
---gd            (Coc) Go to Definition
---gy            (Coc) Go to type definition
---gi            (Coc) Go to implementation
---gr            (Coc) Go to references
---K             (Coc) Shows documentation for function/var/type/whatever is
+-- <CR>         (Coc) Command Completion
+-- gd           (Coc) Go to Definition
+-- gy           (Coc) Go to type definition
+-- gi           (Coc) Go to implementation
+-- gr           (Coc) Go to references
+-- K            (Coc) Shows documentation for function/var/type/whatever is
 --                    under your cursor in a nice little popup window. Note
 --                    that the K key mapping is Shift-k if that wasn't clear.
---\rn           (Coc) Performs a rename of a variable much like you would
+-- <leader>rn          (Coc) Performs a rename of a variable much like you would
 --                    expect from an IDE (renames a variable/function in all 
 --                    occurrunces)
 --
@@ -32,15 +30,23 @@
 -- <F10>         (Vimspector) Step Over
 -- <F11>         (Vimspector) Step Into
 -- <F12>         (Vimspector) Step Out
--- \di           (Vimspector) Balloon Eval
+-- <leader>di           (Vimspector) Balloon Eval
 --
--- \n            (Neotree) Toggles the Nerd Tree (File Tree in left
+-- <leader>n            (Neotree) Toggles the Nerd Tree (File Tree in left
 --                                  sidebar) 
--- ;f            (FZF) Runs fuzzy finder in nice little popup window.
--- \t            (Tagbar) Toggles the Tagbar in the right sidebar
--- \nd           (Neogen) Allows the creation of automated documentation for
+--
+-- <leader>ff           (FZF) Runs fuzzy finder in nice little popup window.
+-- 
+-- <leader>tb           (Vista) Toggles the Tagbar in the right sidebar
+--
+-- <leader>tt           (Todo-comments) Using Telescope, search through todos
+-- <leader>lt           (Todo-comments) Using Telescope, search through todos
+--
+-- <leader>nd           (Neogen) Allows the creation of automated documentation for
 --                        code. (only works in some languages)
 --
+
+vim.g.mapleader = ";"
 
 local o = vim.opt
 local keyset = vim.api.nvim_set_keymap
@@ -109,6 +115,16 @@ plugins = {
         branch = "release",
         -- build = ":call coc#util#install()"
     },
+    {
+        "folke/todo-comments.nvim",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            'nvim-telescope/telescope.nvim',
+        },
+        opts = {
+            -- None right now. Defaults are pretty good
+        }
+    },
     "Valloric/ListToggle",
     "airblade/vim-gitgutter",
     "ryanoasis/vim-devicons",
@@ -134,8 +150,9 @@ plugins = {
     {"lukas-reineke/indent-blankline.nvim", main = "ibl"},
     -- {"junegunn/fzf", build = ":call fzf#install()"},
     -- "junegunn/fzf.vim",
+    "rcarriga/nvim-notify",
     {
-    'nvim-telescope/telescope.nvim', 
+    'nvim-telescope/telescope.nvim',
         branch = '0.1.x',
         dependencies = { 'nvim-lua/plenary.nvim' }
     },
@@ -175,7 +192,7 @@ vim.api.nvim_set_keymap('n', 'j', 'gj', { noremap = true })
 vim.api.nvim_set_keymap('n', 'k', 'gk', { noremap = true })
 
 -- Valloric/List Toggle Settings
-vim.g.lt_location_list_toggle_map = "\\l"
+vim.g.lt_location_list_toggle_map = "<leader>l"
 vim.g.lt_height = 10
 
 -- CoC Settings
@@ -253,16 +270,6 @@ vim.api.nvim_create_autocmd("CursorHold", {
 
 
 
--- vim.api.nvim_set_hl(
-    -- 0,
-    -- 'CocErrorHighlight',
-    -- {
-        -- underline = true,
-        -- ctermfg = "DarkRed",
-
-    -- }
--- )
-
 keyset("n", "\\?", ":call CocAction('diagnosticInfo') <CR>", {noremap = true})
 
 -- Vimspector Settings
@@ -295,7 +302,7 @@ keyset("n", "<F10>", "<Plug>VimspectorStepOver", {noremap = true})
 keyset("n", "<F11>", "<Plug>VimspectorStepInto", {noremap = true})
 keyset("n", "<F12>", "<Plug>VimspectorStepOut", {noremap = true})
 
-keyset("n", "\\di", "<Plug>VimspectorBalloonEval", {})
+keyset("n", "<leader>di", "<Plug>VimspectorBalloonEval", {})
 
 -- NERD Tree Settings
 
@@ -306,7 +313,7 @@ vim.g.NERDTrimTrailingWhitespace = 1
 
 
 -- Neotree Settings
-keyset("n", "\\n", ":Neotree reveal toggle<CR>", {})
+keyset("n", "<leader>n", ":Neotree reveal toggle<CR>", {})
 require("neo-tree").setup({
     source_selector = {
         winbar = true
@@ -318,17 +325,17 @@ vim.g.fzf_preview_window = {
     "right:50%", "ctrl-/"
 }
 
--- keyset("n", ";f", ":Files<CR>", {noremap = true})
+-- keyset("n", "<leader>f", ":Files<CR>", {noremap = true})
 
 -- Telescope Settings
 local builtin = require('telescope.builtin')
-vim.keymap.set('n', ';ff', builtin.find_files, {})
-vim.keymap.set('n', ';fg', builtin.live_grep, {})
-vim.keymap.set('n', ';fb', builtin.buffers, {})
-vim.keymap.set('n', ';fh', builtin.help_tags, {})
+vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
+vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
+vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
+vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
 
 -- Vista Settings (tagbar replacement)
-keyset("n", "\\t", ":Vista!!<CR>", {noremap = true})
+keyset("n", "<leader>tb", ":Vista!!<CR>", {noremap = true})
 
 -- GitGutter Settings
 vim.api.nvim_create_autocmd("VimEnter", {
@@ -361,7 +368,7 @@ indent = {enable = true}
 require('treesitter-context').setup{
   enable = false, -- Enable this plugin (Can be enabled/disabled later via commands)
   max_lines = 1, -- How many lines the window should span. Values <= 0 mean no limit.
-  min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
+  min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit. 
   line_numbers = true,
   multiline_threshold = 20, -- Maximum number of lines to show for a single context
   trim_scope = 'inner', -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
@@ -382,9 +389,16 @@ require('ibl').setup({
 
 -- Neogen Settings
 local opts = { noremap = true, silent = true }
-vim.api.nvim_set_keymap("n", "\\nd", ":lua require('neogen').generate()<CR>", opts)
+vim.api.nvim_set_keymap("n", "<leader>nd", ":lua require('neogen').generate()<CR>", opts)
 
 vim.g.airline_highlighting_cache = 1
+
+-- Todo Settings
+vim.api.nvim_set_keymap("n", "<leader>tt", ":TodoTelescope<CR>", {noremap = true})
+vim.api.nvim_set_keymap("n", "<leader>tl", ":TodoLocList<CR>", {noremap = true})
+
+-- notification settings
+vim.notify = require("notify")
 
 
 -- Custom Highlighting
