@@ -190,6 +190,8 @@ require("lazy").setup(plugins, lazy_opts)
 -- Normal Mode Settings
 vim.api.nvim_set_keymap('n', 'j', 'gj', { noremap = true })
 vim.api.nvim_set_keymap('n', 'k', 'gk', { noremap = true })
+vim.api.nvim_set_keymap('v', 'j', 'gj', { noremap = true })
+vim.api.nvim_set_keymap('v', 'k', 'gk', { noremap = true })
 
 -- Valloric/List Toggle Settings
 vim.g.lt_location_list_toggle_map = "<leader>l"
