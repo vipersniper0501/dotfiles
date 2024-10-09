@@ -4,32 +4,32 @@
 --
 -- Current Custom Key Binds:
 --
--- <leader>     ;
+-- <leader> = ;
 --
--- <CR>         (Coc) Command Completion
--- gd           (Coc) Go to Definition
--- gy           (Coc) Go to type definition
--- gi           (Coc) Go to implementation
--- gr           (Coc) Go to references
--- K            (Coc) Shows documentation for function/var/type/whatever is
---                    under your cursor in a nice little popup window. Note
---                    that the K key mapping is Shift-k if that wasn't clear.
--- <leader>rn          (Coc) Performs a rename of a variable much like you would
---                    expect from an IDE (renames a variable/function in all 
---                    occurrunces)
+-- <CR>                 (Coc) Command Completion
+-- gd                   (Coc) Go to Definition
+-- gy                   (Coc) Go to type definition
+-- gi                   (Coc) Go to implementation
+-- gr                   (Coc) Go to references
+-- K                    (Coc) Shows documentation for function/var/type/whatever is
+--                            under your cursor in a nice little popup window. Note
+--                            hat the K key mapping is Shift-k if that wasn't clear.
+-- <leader>rn           (Coc) Performs a rename of a variable much like you would
+--                            expect from an IDE (renames a variable/function in all 
+--                            occurrunces)
 --
--- <F2>          (Vimspector) Quit Debugging (VimspectorReset)
--- <F3>          (Vimspector) Stop Debugging (VimspectorStop)
--- <F4>          (Vimspector) Restart Debugging with same configuration
--- <F5>          (Vimspector) Start/Continue Debugging
--- <F6>          (Vimspector) Pause Debugger
--- <F8>          (Vimspector) Add a *function* breakpoint for the expression
---                            under the cursor
--- <F9>          (Vimspector) Toggle _line_ breakpoint or logpoint on the current
---                            line
--- <F10>         (Vimspector) Step Over
--- <F11>         (Vimspector) Step Into
--- <F12>         (Vimspector) Step Out
+-- <F2>                 (Vimspector) Quit Debugging (VimspectorReset)
+-- <F3>                 (Vimspector) Stop Debugging (VimspectorStop)
+-- <F4>                 (Vimspector) Restart Debugging with same configuration
+-- <F5>                 (Vimspector) Start/Continue Debugging
+-- <F6>                 (Vimspector) Pause Debugger
+-- <F8>                 (Vimspector) Add a *function* breakpoint for the expression
+--                                   under the cursor
+-- <F9>                 (Vimspector) Toggle _line_ breakpoint or logpoint on the current
+--                                   line
+-- <F10>                (Vimspector) Step Over
+-- <F11>                (Vimspector) Step Into
+-- <F12>                (Vimspector) Step Out
 -- <leader>di           (Vimspector) Balloon Eval
 --
 -- <leader>n            (Neotree) Toggles the Nerd Tree (File Tree in left
@@ -194,8 +194,6 @@ require("coc")
 -- Normal Mode Settings
 vim.api.nvim_set_keymap('n', 'j', 'gj', { noremap = true })
 vim.api.nvim_set_keymap('n', 'k', 'gk', { noremap = true })
-vim.api.nvim_set_keymap('v', 'j', 'gj', { noremap = true })
-vim.api.nvim_set_keymap('v', 'k', 'gk', { noremap = true })
 
 -- Valloric/List Toggle Settings
 vim.g.lt_location_list_toggle_map = "<leader>l"
