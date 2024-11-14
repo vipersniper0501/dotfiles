@@ -11,7 +11,14 @@ return {
                 capabilities = capabilities
             })
             lspconfig.rust_analyzer.setup({
-                capabilities = capabilities
+                capabilities = capabilities,
+                settings = {
+                    ['rust-analyzer'] = {
+                        diagnostics = {
+                            enable = true
+                        }
+                    }
+                }
             })
             lspconfig.clangd.setup({
                 capabilities = capabilities
