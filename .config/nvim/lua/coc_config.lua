@@ -78,4 +78,7 @@ vim.api.nvim_create_autocmd("CursorHold", {
 keyset("n", "<leader>?", ":call CocAction('diagnosticInfo') <CR>", {noremap = true})
 
 
+-- Custom Highlighting
+vim.cmd([[highlight CocErrorHighlight cterm=underline ctermfg=1 gui=undercurl guibg=#D05A42 guisp=#FF0000]])
+vim.cmd([[highlight CocWarningHighlight cterm=underline ctermfg=1 gui=undercurl guibg=#D05A42 guisp=#FF0000]])
 
