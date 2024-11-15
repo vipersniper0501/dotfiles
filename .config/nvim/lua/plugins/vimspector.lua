@@ -9,14 +9,14 @@ return {
             }
 
             vim.g.vimscpector_sign_priority = {
-                vimspectorBP =              997,
-                vimspectorBPCond =          997,
-                vimspectorBPLog =           997,
-                vimspectorBPDisabled =      997,
-                vimspectorPC =              998,
-                vimspectorPCBP =            999,
-                vimspectorCurrentThread =   997,
-                vimspectorCurrentFrame =    997
+                vimspectorBP =              99997,
+                vimspectorBPCond =          99997,
+                vimspectorBPLog =           99997,
+                vimspectorBPDisabled =      99997,
+                vimspectorPC =              99998,
+                vimspectorPCBP =            99999,
+                vimspectorCurrentThread =   99997,
+                vimspectorCurrentFrame =    99997
             }
 
             keyset("n", "<F2>", ":VimspectorReset<CR>", {noremap = true})
