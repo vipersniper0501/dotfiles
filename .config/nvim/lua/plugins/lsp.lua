@@ -8,7 +8,38 @@ return {
             local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
             lspconfig.lua_ls.setup({
-                capabilities = capabilities
+                capabilities = capabilities,
+                on_init = function(client)
+                  if client.workspace_folders then
+                    local path = client.workspace_folders[1].name
+                    if vim.uv.fs_stat(path..'/.luarc.json') or vim.uv.fs_stat(path..'/.luarc.jsonc') then
+                      return
+                    end
+                  end
+              
+                  client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+                    runtime = {
+                      -- Tell the language server which version of Lua you're using
+                      -- (most likely LuaJIT in the case of Neovim)
+                      version = 'LuaJIT'
+                    },
+                    -- Make the server aware of Neovim runtime files
+                    workspace = {
+                      checkThirdParty = false,
+                      library = {
+                        vim.env.VIMRUNTIME
+                        -- Depending on the usage, you might want to add additional paths here.
+                        -- "${3rd}/luv/library"
+                        -- "${3rd}/busted/library",
+                      }
+                      -- or pull in all of 'runtimepath'. NOTE: this is a lot slower and will cause issues when working on your own configuration (see https://github.com/neovim/nvim-lspconfig/issues/3189)
+                      -- library = vim.api.nvim_get_runtime_file("", true)
+                    }
+                  })
+                end,
+                settings = {
+                  Lua = {}
+                }
             })
             lspconfig.rust_analyzer.setup({
                 capabilities = capabilities
@@ -108,22 +139,23 @@ return {
                     vim.api.nvim_command('h ' .. cw)
                 else
                     -- vim.lsp.buf.hover()
-                    require("hover").hover()
+                    vim.api.nvim_command("Lspsaga hover_doc")
                 end
             end
 
-            vim.keymap.set("n", "K",  _G.show_docs, {silent = true})
-            vim.keymap.set("n", "gi", vim.lsp.buf.implementation, {silent = true})
-            vim.keymap.set('n', 'gr', vim.lsp.buf.references, {silent = true})
-            vim.keymap.set('n', 'gy', vim.lsp.buf.type_definition, {silent = true})
-            vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, {silent = true})
-            vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, {silent = true})
+            vim.keymap.set("n", "K",  _G.show_docs, {noremap = true, silent = true})
+            vim.keymap.set("n", "gi", require("telescope.builtin").lsp_implementations, {noremap = true, silent = true})
+            vim.keymap.set('n', 'gr', require("telescope.builtin").lsp_references, {noremap = true, silent = true})
+            vim.keymap.set('n', 'gy', vim.lsp.buf.type_definition, {noremap = true, silent = true})
+            vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, {noremap = true, silent = true})
+            vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, {noremap = true, silent = true})
         end
     },
     "hrsh7th/cmp-nvim-lsp",
     "hrsh7th/cmp-buffer",
     "hrsh7th/cmp-path",
-    "hrsh7th/cmp-cmdline",
+    "hrsh7th/cmp-nvim-lsp-signature-help",
+    "onsails/lspkind.nvim",
     {
         "hrsh7th/nvim-cmp",
         config = function()
@@ -131,40 +163,68 @@ return {
             local cmp = require("cmp")
             local select_opts = { behavior = cmp.SelectBehavior.Select }
             local compare = cmp.config.compare
+
+
+            local function get_lsp_completion_context(completion, source)
+                local ok, source_name = pcall(function() return source.source.client.config.name end)
+                if not ok then return nil end
+                if source_name == "ts_ls" then
+                    return completion.detail
+                elseif source_name == "pyright" then
+                    if completion.labelDetails ~= nil then
+                        return completion.labelDetails.description
+                elseif source_name == "rust_analyzer" then
+                        return completion.detail
+                elseif source_name == "zls" then
+                        return completion.detail
+                elseif source_name == "lua_ls" then
+                        return completion.detail
+                elseif source_name == "gopls" then
+                        return completion.detail
+                elseif source_name == "volar" then
+                        return completion.detail
+                elseif source_name == "clangd" then
+                        local doc = completion.documentation
+                        if doc == nil then return end
+                        local import_str = doc.value
+                        local i, j = string.find(import_str, "<.*>")
+                        if i == nil then return end
+                        return string.sub(import_str, i , j)
+                elseif source_name == "jdtls" then
+                        return completion.detail
+                end
+                end
+            end
+
             cmp.setup({
                 sources = {
-                    {name = "nvim_lsp", keyword_length = 1, priority = 3},
-                    {name = "path", priority = 2},
-                    {name = "buffer", keyword_length = 3, priority = 1},
+                    {name = "nvim_lsp", priority = 100},
+                    {name = "path", priority = 99},
+                    {name = "buffer", priority = 98},
+                    {name = "nvim_lsp_signature_help", priority = 97}
 
                 },
                 window = {
                     completion = cmp.config.window.bordered(),
                     documentation = cmp.config.window.bordered(),
-                    scrollbar = '║'
                 },
                 completion = { completeopt = 'menu,menuone,noinsert,noselect' },
                 preselect = cmp.PreselectMode.None,
                 formatting = {
-                    fields = {'menu', 'abbr', 'kind'},
+                    fields = {'abbr', 'kind', 'menu'},
                     format = function(entry, vim_item)
-                        -- Source
-                        vim_item.menu = ({
-                            buffer = "[Buffer]",
-                            nvim_lsp = "[LSP]",
-                            luasnip = "[LuaSnip]",
-                            nvim_lua = "[Lua]",
-                            latex_symbols = "[LaTeX]",
-                        })[entry.source.name]
-                        return vim_item
+                        local item_with_kind = require("lspkind").cmp_format({
+                            mode = "symbol_text",
+                            maxwidth = 50
+                        })(entry, vim_item)
+
+                        local completion_context = get_lsp_completion_context(entry.completion_item, entry.source)
+                        if completion_context ~= nil and completion_context ~= "" then
+                            item_with_kind.menu = item_with_kind.menu .. completion_context
+                        end
+
+                        return item_with_kind
                     end
-                    -- format = lspkind.cmp_format({
-                        -- mode = "symbol_text",
-                        -- menu = ({
-                            -- buffer = "[Buffer]",
-                            -- nvim_lsp = "[LSP]",
-                        -- })
-                    -- })
                 },
                 mapping = {
                     ["<CR>"] = cmp.mapping.confirm({select = true}),
