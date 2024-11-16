@@ -151,6 +151,7 @@ return {
             end
 
             vim.keymap.set("n", "K",  _G.show_docs, {noremap = true, silent = true})
+            vim.keymap.set("n", "gd", vim.lsp.buf.definition, {noremap = true, silent = true})
             vim.keymap.set("n", "gi", require("telescope.builtin").lsp_implementations, {noremap = true, silent = true})
             vim.keymap.set('n', 'gr', require("telescope.builtin").lsp_references, {noremap = true, silent = true})
             vim.keymap.set('n', 'gy', vim.lsp.buf.type_definition, {noremap = true, silent = true})
@@ -211,11 +212,14 @@ return {
                     {name = "nvim_lsp_signature_help", priority = 97}
 
                 },
+                experimental = {
+                    ghost_text = false
+                },
                 window = {
                     completion = cmp.config.window.bordered(),
                     documentation = cmp.config.window.bordered(),
                 },
-                completion = { completeopt = 'menu,menuone,noinsert,noselect' },
+                completion = { completeopt = 'menu,menuone,noselect' },
                 preselect = cmp.PreselectMode.None,
                 formatting = {
                     fields = {'abbr', 'kind', 'menu'},
@@ -234,7 +238,7 @@ return {
                     end
                 },
                 mapping = {
-                    ["<CR>"] = cmp.mapping.confirm({select = true}),
+                    ["<CR>"] = cmp.mapping.confirm({select = false}),
                     ["<Tab>"] = cmp.mapping.select_next_item(select_opts),
                     ["<S-Tab>"] = cmp.mapping.select_prev_item(select_opts),
                     ["<C-u>"] = cmp.mapping.scroll_docs(-4),
@@ -243,17 +247,26 @@ return {
                 sorting = {
                     priority_weight = 1.0,
                     comparators = {
-                      -- compare.score_offset, -- not good at all
-                      compare.locality,
-                      compare.recently_used,
-                      compare.score, -- based on :  score = score + ((#sources - (source_index - 1)) * sorting.priority_weight)
-                      compare.offset,
-                      compare.order,
-                      -- compare.scopes, -- what?
-                      -- compare.sort_text,
-                      -- compare.exact,
-                      -- compare.kind,
-                      -- compare.length, -- useless 
+                        cmp.config.compare.offset,
+                        cmp.config.compare.exact,
+                        cmp.config.compare.score,
+
+                        function(entry1, entry2)
+                            local _, entry1_under = entry1.completion_item.label:find "^_+"
+                            local _, entry2_under = entry2.completion_item.label:find "^_+"
+                            entry1_under = entry1_under or 0
+                            entry2_under = entry2_under or 0
+                            if entry1_under > entry2_under then
+                                return false
+                            elseif entry1_under < entry2_under then
+                                return true
+                            end
+                        end,
+
+                        cmp.config.compare.kind,
+                        cmp.config.compare.sort_text,
+                        cmp.config.compare.length,
+                        cmp.config.compare.order,
                     },
                 },
             })
