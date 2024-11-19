@@ -10,7 +10,7 @@ return {
         config = function()
 
             local keyset = vim.api.nvim_set_keymap
-            keyset("n", "<leader>n", ":Neotree reveal toggle<CR>", {})
+            keyset("n", "<leader>n", ":Neotree reveal toggle<CR>", {noremap = true})
             require("neo-tree").setup({
                 source_selector = {
                     winbar = true

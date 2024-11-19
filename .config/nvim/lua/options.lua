@@ -35,5 +35,5 @@ vim.api.nvim_set_option_value("colorcolumn", "80", {})
 
 vim.api.nvim_set_keymap('n', 'j', 'gj', { noremap = true })
 vim.api.nvim_set_keymap('n', 'k', 'gk', { noremap = true })
-vim.api.nvim_set_keymap('n', '<esc>', '<esc>:noh<cr>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<esc>', '<esc>:noh<cr>', { noremap = true, silent = true })
 
