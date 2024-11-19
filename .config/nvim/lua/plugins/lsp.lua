@@ -9,37 +9,6 @@ return {
 
             lspconfig.lua_ls.setup({
                 capabilities = capabilities,
-                on_init = function(client)
-                  if client.workspace_folders then
-                    local path = client.workspace_folders[1].name
-                    if vim.uv.fs_stat(path..'/.luarc.json') or vim.uv.fs_stat(path..'/.luarc.jsonc') then
-                      return
-                    end
-                  end
-
-                  client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
-                    runtime = {
-                      -- Tell the language server which version of Lua you're using
-                      -- (most likely LuaJIT in the case of Neovim)
-                      version = 'LuaJIT'
-                    },
-                    -- Make the server aware of Neovim runtime files
-                    workspace = {
-                      checkThirdParty = false,
-                      library = {
-                        vim.env.VIMRUNTIME
-                        -- Depending on the usage, you might want to add additional paths here.
-                        -- "${3rd}/luv/library"
-                        -- "${3rd}/busted/library",
-                      }
-                      -- or pull in all of 'runtimepath'. NOTE: this is a lot slower and will cause issues when working on your own configuration (see https://github.com/neovim/nvim-lspconfig/issues/3189)
-                      -- library = vim.api.nvim_get_runtime_file("", true)
-                    }
-                  })
-                end,
-                settings = {
-                  Lua = {}
-                }
             })
             lspconfig.rust_analyzer.setup({
                 capabilities = capabilities,
@@ -151,7 +120,7 @@ return {
             end
 
             vim.keymap.set("n", "K",  _G.show_docs, {noremap = true, silent = true})
-            vim.keymap.set("n", "gd", vim.lsp.buf.definition, {noremap = true, silent = true})
+            vim.keymap.set("n", "gd", require("telescope.builtin").lsp_definitions, {noremap = true, silent = true})
             vim.keymap.set("n", "gi", require("telescope.builtin").lsp_implementations, {noremap = true, silent = true})
             vim.keymap.set('n', 'gr', require("telescope.builtin").lsp_references, {noremap = true, silent = true})
             vim.keymap.set('n', 'gy', vim.lsp.buf.type_definition, {noremap = true, silent = true})
@@ -222,6 +191,7 @@ return {
                 completion = { completeopt = 'menu,menuone,noselect' },
                 preselect = cmp.PreselectMode.None,
                 formatting = {
+                    expandable_indicator = true,
                     fields = {'abbr', 'kind', 'menu'},
                     format = function(entry, vim_item)
                         local item_with_kind = require("lspkind").cmp_format({
@@ -251,6 +221,7 @@ return {
                         cmp.config.compare.exact,
                         cmp.config.compare.score,
 
+                        -- copied from cmp-under
                         function(entry1, entry2)
                             local _, entry1_under = entry1.completion_item.label:find "^_+"
                             local _, entry2_under = entry2.completion_item.label:find "^_+"
@@ -263,7 +234,33 @@ return {
                             end
                         end,
 
-                        cmp.config.compare.kind,
+                        ---kind: Entires with smaller ordinal value of 'kind' will be ranked higher.
+                        ---(see lsp.CompletionItemKind enum).
+                        ---Exceptions are that Text(1) will be ranked the lowest, and snippets be the highest.
+                        ---@type cmp.ComparatorFunction
+                        function(entry1, entry2)
+                            local types = require("cmp.types")
+                            local kind1 = entry1:get_kind() --- @type lsp.CompletionItemKind | number
+                            local kind2 = entry2:get_kind() --- @type lsp.CompletionItemKind | number
+                            kind1 = kind1 == types.lsp.CompletionItemKind.Text and 100 or kind1
+                            kind2 = kind2 == types.lsp.CompletionItemKind.Text and 100 or kind2
+                            if kind1 ~= kind2 then
+                                -- Disable putting snippets at the top
+                                --if kind1 == types.lsp.CompletionItemKind.Snippet then
+                                    --return true
+                                --end
+                                --if kind2 == types.lsp.CompletionItemKind.Snippet then
+                                    --return false
+                                --end
+                                local diff = kind1 - kind2
+                                if diff < 0 then
+                                    return true
+                                elseif diff > 0 then
+                                    return false
+                                end
+                            end
+                            return nil
+                        end,
                         cmp.config.compare.sort_text,
                         cmp.config.compare.length,
                         cmp.config.compare.order,
