@@ -139,9 +139,12 @@ return {
 
             local cmp = require("cmp")
             local select_opts = { behavior = cmp.SelectBehavior.Select }
-            local compare = cmp.config.compare
 
-
+            --- Function for retrieving the import location of a completion item.
+            --- i.e from what file/module are we trying to import this function/variable/method/etc
+            --- from
+            ---@param completion lsp.CompletionItem
+            ---@param source cmp.Source
             local function get_lsp_completion_context(completion, source)
                 local ok, source_name = pcall(function() return source.source.client.config.name end)
                 if not ok then return nil end
@@ -176,9 +179,10 @@ return {
             cmp.setup({
                 sources = {
                     {name = "nvim_lsp", priority = 100},
-                    {name = "path", priority = 99},
-                    {name = "buffer", priority = 98},
-                    {name = "nvim_lsp_signature_help", priority = 97}
+                    {name = "lazydev", priority = 99},
+                    {name = "path", priority = 98},
+                    {name = "buffer", priority = 97},
+                    {name = "nvim_lsp_signature_help", priority = 96}
 
                 },
                 experimental = {
