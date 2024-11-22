@@ -11,6 +11,7 @@
 -- gy                   Go to type definition
 -- gi                   Go to implementation
 -- gr                   Go to references
+-- <leader>rn           Rename variable
 -- K                    Shows documentation for function/var/type/whatever is
 --                            under your cursor in a nice little popup window. Note
 --                            hat the K key mapping is Shift-k if that wasn't clear.
@@ -27,15 +28,17 @@
 --                                   under the cursor
 -- <F9>                 (Vimspector) Toggle _line_ breakpoint or logpoint on the current
 --                                   line
+-- <leader><F9>         (Vimspector) Show dissassembly
 -- <F10>                (Vimspector) Step Over
 -- <F11>                (Vimspector) Step Into
 -- <F12>                (Vimspector) Step Out
 -- <leader>di           (Vimspector) Balloon Eval
 --
--- <leader>n            (Neotree) Toggles the Nerd Tree (File Tree in left
---                                  sidebar) 
+-- <leader>n            (Neotree) Toggles the file tree
 --
--- <leader>ff           (FZF) Runs fuzzy finder in nice little popup window.
+-- <leader>ff           Using telescope, fuzzy find files
+-- <leader>fg           Using telescope and ripgrep, fuzzy grep find text in files
+-- <leader>fb           Using telescope, fuzzy find open buffers
 -- 
 -- <leader>tb           (Vista) Toggles the Tagbar in the right sidebar
 --
@@ -44,6 +47,9 @@
 --
 -- <leader>nd           (Neogen) Allows the creation of automated documentation for
 --                        code. (only works in some languages)
+--
+-- <leader>cc           Comment out line(s)
+-- <leader>cu           Uncomment line(s)
 --
 
 
