@@ -14,6 +14,9 @@ return {
             require("neo-tree").setup({
                 source_selector = {
                     winbar = true
+                },
+                filesystem = {
+                    hijack_netrw_behavior = "open_current"
                 }
             })
         end
