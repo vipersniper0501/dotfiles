@@ -29,6 +29,9 @@ o.termguicolors = true
 o.list = true
 o.swapfile = false
 -- o.ttymouse = "sgr"
+-- Spellcheck
+o.spell = true
+o.spelllang = "en_us"
 o.signcolumn = "number"
 o.completeopt = {'menu', 'menuone', 'noselect'}
 vim.api.nvim_set_option_value("colorcolumn", "80", {})
