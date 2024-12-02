@@ -27,6 +27,8 @@ return {
                 capabilities = capabilities
             })
             lspconfig.gopls.setup({
+                cmd = {'gopls', '--remote=auto'},
+                filetypes = { "go", "gomod", "gowork", "gotmpl" },
                 capabilities = capabilities
             })
             lspconfig.ts_ls.setup({
@@ -38,9 +40,9 @@ return {
             lspconfig.vimls.setup({
                 capabilities = capabilities
             })
-            lspconfig.volar.setup({
-                capabilities = capabilities
-            })
+            --lspconfig.volar.setup({
+                --capabilities = capabilities
+            --})
             lspconfig.glsl_analyzer.setup({
                 capabilities = capabilities
             })
@@ -117,7 +119,6 @@ return {
                 if vim.fn.index({'vim', 'help'}, vim.bo.filetype) >= 0 then
                     vim.api.nvim_command('h ' .. cw)
                 else
-                    -- vim.lsp.buf.hover()
                     vim.api.nvim_command("Lspsaga hover_doc")
                 end
             end
@@ -207,7 +208,7 @@ return {
                         })(entry, vim_item)
 
                         local completion_context = get_lsp_completion_context(entry.completion_item, entry.source)
-                        if completion_context ~= nil and completion_context ~= "" then
+                        if completion_context ~= nil and completion_context ~= "" and item_with_kind.menu ~= nil then
                             item_with_kind.menu = item_with_kind.menu .. completion_context
                         end
 

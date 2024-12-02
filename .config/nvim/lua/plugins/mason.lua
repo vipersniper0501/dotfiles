@@ -4,7 +4,7 @@ return {
         config = function()
             require("mason-tool-installer").setup({
                 ensure_installed = { "lua_ls", "rust_analyzer", "clangd",
-                    "pyright", "gopls", "ts_ls", "zls", "vimls", "volar",
+                    "pyright", "gopls", "ts_ls", "zls", "vimls",
                     "glsl_analyzer", "rnix", "jdtls", "stylua", "checkmake",
                     "ansible-lint", "cmakelint"},
                 run_on_start = true,
