@@ -7,5 +7,5 @@ return {
     {"habamax/vim-asciidoctor", ft = {"adoc", "asciidoctor"}},
     "nvim-lua/plenary.nvim",
     "tpope/vim-fugitive",
-    "mfussenegger/nvim-jdtls",
+    {"mfussenegger/nvim-jdtls", ft = {"java"}},
 }
