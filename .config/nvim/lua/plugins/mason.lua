@@ -6,7 +6,7 @@ return {
                 ensure_installed = { "lua_ls", "rust_analyzer", "clangd",
                     "pyright", "gopls", "ts_ls", "zls", "vimls", "volar",
                     "glsl_analyzer", "rnix", "jdtls", "stylua", "checkmake",
-                    "ansible-lint", "cmakelint"},
+                    "ansible-lint", "cmakelint", "csharp_ls"},
                 run_on_start = true,
             })
         end

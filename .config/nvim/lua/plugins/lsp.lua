@@ -23,6 +23,9 @@ return {
             lspconfig.clangd.setup({
                 capabilities = capabilities
             })
+            lspconfig.csharp_ls.setup({
+                capabilities = capabilities
+            })
             lspconfig.pyright.setup({
                 capabilities = capabilities
             })
@@ -135,7 +138,7 @@ return {
     "hrsh7th/cmp-nvim-lsp",
     "hrsh7th/cmp-buffer",
     "hrsh7th/cmp-path",
-    "hrsh7th/cmp-nvim-lsp-signature-help",
+    --"hrsh7th/cmp-nvim-lsp-signature-help",
     "onsails/lspkind.nvim",
     {
         "hrsh7th/nvim-cmp",
