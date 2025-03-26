@@ -1,5 +1,3 @@
-#if [ "$TMUX" = "" ]; then tmux; fi
-
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -122,7 +120,6 @@ plugins=(git)
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias python="python3.9"
 alias dotfile_config="git --git-dir=$HOME/.dot_cfg/.git --work-tree=$HOME/.dot_cfg"
 alias ll="ls -la --color=auto"
 alias ls="ls --color=auto"
@@ -204,5 +201,6 @@ export CHROME_BIN=/mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe
 # Load Angular CLI autocompletion.
 #source <(ng completion script)
 
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 eval "$(starship init zsh)"

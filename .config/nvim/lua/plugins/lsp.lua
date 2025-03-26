@@ -74,12 +74,6 @@ return {
               }
             )
 
-            vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
-              vim.lsp.handlers.signature_help, {
-                border = _border
-              }
-            )
-
             vim.diagnostic.config{
               float={border=_border}
             }
@@ -122,7 +116,8 @@ return {
                 if vim.fn.index({'vim', 'help'}, vim.bo.filetype) >= 0 then
                     vim.api.nvim_command('h ' .. cw)
                 else
-                    vim.api.nvim_command("Lspsaga hover_doc")
+                    vim.lsp.buf.hover()
+                    --vim.api.nvim_command("Lspsaga hover_doc")
                 end
             end
 
@@ -143,6 +138,19 @@ return {
     {
         "hrsh7th/nvim-cmp",
         config = function()
+
+            function _G.debug_signature_help()
+                print("Triggering Signature Help")
+                vim.lsp.buf.signature_help()
+                
+                -- Optional: Print current capabilities
+                local client = vim.lsp.get_active_clients()[1]
+                print("Current Client Capabilities:")
+                print(vim.inspect(client.server_capabilities.signatureHelpProvider))
+            end
+
+            -- Bind to a key for testing
+            vim.keymap.set('n', '<leader>sh', _G.debug_signature_help)
 
             local cmp = require("cmp")
             local select_opts = { behavior = cmp.SelectBehavior.Select }
@@ -183,13 +191,79 @@ return {
                 end
             end
 
+            local signature_help_triggers = {}
+
+            -- Cache trigger characters when LSP attaches
+            vim.api.nvim_create_autocmd('LspAttach', {
+              callback = function(args)
+                local client = vim.lsp.get_client_by_id(args.data.client_id)
+                if client and client.server_capabilities.signatureHelpProvider then
+                  signature_help_triggers[args.buf] = client.server_capabilities.signatureHelpProvider.triggerCharacters or {}
+                end
+              end
+            })
+
+            vim.lsp.handlers["textDocument/signatureHelp"] = function(_, result, ctx, config)
+              if not (result and result.signatures) then return end
+              local active_signature = result.activeSignature or 0
+              local active_parameter = result.activeParameter or 0
+              local lines = {}
+              for i, signature in ipairs(result.signatures) do
+                if signature.label then
+                  if i == active_signature + 1 or active_signature == 0 then
+                    local params = signature.label:match("%b()") or signature.label
+
+                    if signature.parameters and #signature.parameters > 0 then
+                      local param_index = math.min(active_parameter + 1, #signature.parameters)
+                      local param = signature.parameters[param_index]
+                      local param_label = type(param.label) == 'table' and
+                                        signature.label:sub(param.label[1] + 1, param.label[2]) or
+                                        param.label
+
+                      params = params:gsub(vim.pesc(param_label), '***'..param_label..'***')
+                    end
+
+                    table.insert(lines, params)
+                  end
+                end
+              end
+
+              if #lines > 0 then
+                vim.lsp.util.open_floating_preview(lines, "markdown", {
+                  border = "single",
+                  focusable = false,
+                  max_width = 80,
+                  max_height = 10,
+                })
+              end
+            end
+
+            -- Auto-trigger using LSP server's trigger characters and space after comma
+            vim.api.nvim_create_autocmd("TextChangedI", {
+              callback = function()
+                local buf = vim.api.nvim_get_current_buf()
+                local buf_triggers = signature_help_triggers[buf] or {}
+                local line = vim.fn.getline('.')
+                local col = vim.fn.col('.')
+                local prev_char = line:sub(col-1, col-1)
+                local prev_prev_char = col > 2 and line:sub(col-2, col-2) or ''
+
+                -- Trigger on server's trigger characters
+                if vim.tbl_contains(buf_triggers, prev_char) then
+                  vim.defer_fn(vim.lsp.buf.signature_help, 50)
+                -- Trigger on space after comma
+                elseif prev_char == ' ' and vim.tbl_contains(buf_triggers, prev_prev_char) then
+                  vim.defer_fn(vim.lsp.buf.signature_help, 50)
+                end
+              end
+            })
+
             cmp.setup({
                 sources = {
                     {name = "nvim_lsp", priority = 100},
-                    {name = "lazydev", priority = 99},
-                    {name = "path", priority = 98},
-                    {name = "buffer", priority = 97},
-                    {name = "nvim_lsp_signature_help", priority = 96}
+                    {name = "lazydev", priority = 90},
+                    {name = "path", priority = 80},
+                    {name = "buffer", priority = 70},
 
                 },
                 experimental = {
@@ -199,7 +273,9 @@ return {
                     completion = cmp.config.window.bordered(),
                     documentation = cmp.config.window.bordered(),
                 },
-                completion = { completeopt = 'menu,menuone,noselect' },
+                completion = { 
+                    completeopt = 'menu,menuone,noselect',
+                },
                 preselect = cmp.PreselectMode.None,
                 formatting = {
                     expandable_indicator = true,
