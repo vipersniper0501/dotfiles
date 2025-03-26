@@ -86,7 +86,5 @@ local lazy_opts = {
     }
 }
 
-require("lsp_debug")
-
 require("lazy").setup("plugins", lazy_opts)
 
