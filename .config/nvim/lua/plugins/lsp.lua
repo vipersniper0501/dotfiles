@@ -30,8 +30,6 @@ return {
                 capabilities = capabilities
             })
             lspconfig.gopls.setup({
-                cmd = {'gopls', '--remote=auto'},
-                filetypes = { "go", "gomod", "gowork", "gotmpl" },
                 capabilities = capabilities
             })
             lspconfig.ts_ls.setup({
