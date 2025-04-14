@@ -203,4 +203,5 @@ export CHROME_BIN=/mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe
 
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
+
 eval "$(starship init zsh)"
