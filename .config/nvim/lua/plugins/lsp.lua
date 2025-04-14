@@ -7,6 +7,7 @@ return {
             local lspconfig = require("lspconfig")
             local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
+            -- Enable/setup a bunch of LSPs that were installed/downloaded via Mason
             lspconfig.lua_ls.setup({
                 capabilities = capabilities,
             })
@@ -53,7 +54,7 @@ return {
             lspconfig.jdtls.setup({
                 capabilities = capabilities
             })
-            -- Other gneral lsp config settings
+            -- Other general lsp config settings
             vim.diagnostic.config({
               virtual_text = false,
                 virtual_lines = {
@@ -72,7 +73,6 @@ return {
               }
             )
 
-
             _G.shift_k_enabled = false
             vim.api.nvim_create_augroup("LspGroup", {})
 
@@ -80,7 +80,6 @@ return {
                 group = "LspGroup",
                 callback = function()
                     if not _G.shift_k_enabled then
-                        -- vim.api.nvim_command(vim.diagnostic.open_float())
                         vim.diagnostic.open_float(0, {
                             scope = "cursor",
                             focusable = false,
@@ -127,63 +126,20 @@ return {
     "hrsh7th/cmp-nvim-lsp",
     "hrsh7th/cmp-buffer",
     "hrsh7th/cmp-path",
-    --"hrsh7th/cmp-nvim-lsp-signature-help",
     "onsails/lspkind.nvim",
     {
         "hrsh7th/nvim-cmp",
+        opts = function(_, opts)
+            opts.sources = opts.sources or {}
+            table.insert(opts.sources, {
+                name = "lazydev",
+                group_index = 0, -- set group index to 0 to skip loading LuaLS completions
+            })
+        end,
         config = function()
-
-            function _G.debug_signature_help()
-                print("Triggering Signature Help")
-                vim.lsp.buf.signature_help()
-                
-                -- Optional: Print current capabilities
-                local client = vim.lsp.get_active_clients()[1]
-                print("Current Client Capabilities:")
-                print(vim.inspect(client.server_capabilities.signatureHelpProvider))
-            end
-
-            -- Bind to a key for testing
-            vim.keymap.set('n', '<leader>sh', _G.debug_signature_help)
 
             local cmp = require("cmp")
             local select_opts = { behavior = cmp.SelectBehavior.Select }
-
-            --- Function for retrieving the import location of a completion item.
-            --- i.e from what file/module are we trying to import this function/variable/method/etc
-            --- from
-            ---@param completion lsp.CompletionItem
-            ---@param source cmp.Source
-            local function get_lsp_completion_context(completion, source)
-                local ok, source_name = pcall(function() return source.source.client.config.name end)
-                if not ok then return nil end
-                if source_name == "ts_ls" then
-                    return completion.detail
-                elseif source_name == "pyright" then
-                    if completion.labelDetails ~= nil then
-                        return completion.labelDetails.description
-                elseif source_name == "rust_analyzer" then
-                        return completion.detail
-                elseif source_name == "zls" then
-                        return completion.detail
-                elseif source_name == "lua_ls" then
-                        return completion.detail
-                elseif source_name == "gopls" then
-                        return completion.detail
-                elseif source_name == "volar" then
-                        return completion.detail
-                elseif source_name == "clangd" then
-                        local doc = completion.documentation
-                        if doc == nil then return end
-                        local import_str = doc.value
-                        local i, j = string.find(import_str, "<.*>")
-                        if i == nil then return end
-                        return string.sub(import_str, i , j)
-                elseif source_name == "jdtls" then
-                        return completion.detail
-                end
-                end
-            end
 
             local signature_help_triggers = {}
 
@@ -196,41 +152,6 @@ return {
                 end
               end
             })
-
-            vim.lsp.handlers["textDocument/signatureHelp"] = function(_, result, ctx, config)
-              if not (result and result.signatures) then return end
-              local active_signature = result.activeSignature or 0
-              local active_parameter = result.activeParameter or 0
-              local lines = {}
-              for i, signature in ipairs(result.signatures) do
-                if signature.label then
-                  if i == active_signature + 1 or active_signature == 0 then
-                    local params = signature.label:match("%b()") or signature.label
-
-                    if signature.parameters and #signature.parameters > 0 then
-                      local param_index = math.min(active_parameter + 1, #signature.parameters)
-                      local param = signature.parameters[param_index]
-                      local param_label = type(param.label) == 'table' and
-                                        signature.label:sub(param.label[1] + 1, param.label[2]) or
-                                        param.label
-
-                      params = params:gsub(vim.pesc(param_label), '***'..param_label..'***')
-                    end
-
-                    table.insert(lines, params)
-                  end
-                end
-              end
-
-              if #lines > 0 then
-                vim.lsp.util.open_floating_preview(lines, "markdown", {
-                  border = "single",
-                  focusable = false,
-                  max_width = 80,
-                  max_height = 10,
-                })
-              end
-            end
 
             -- Auto-trigger using LSP server's trigger characters and space after comma
             vim.api.nvim_create_autocmd("TextChangedI", {
@@ -252,6 +173,8 @@ return {
               end
             })
 
+            local lspkind = require("lspkind")
+            lspkind.init()
             cmp.setup({
                 sources = {
                     {name = "nvim_lsp", priority = 100},
@@ -267,7 +190,7 @@ return {
                     completion = cmp.config.window.bordered(),
                     documentation = cmp.config.window.bordered(),
                 },
-                completion = { 
+                completion = {
                     completeopt = 'menu,menuone,noselect',
                 },
                 preselect = cmp.PreselectMode.None,
@@ -275,15 +198,27 @@ return {
                     expandable_indicator = true,
                     fields = {'abbr', 'kind', 'menu'},
                     format = function(entry, vim_item)
-                        local item_with_kind = require("lspkind").cmp_format({
+                        local item_with_kind = lspkind.cmp_format({
                             mode = "symbol_text",
-                            maxwidth = 50
+                            show_labelDetails = true
                         })(entry, vim_item)
 
-                        local completion_context = get_lsp_completion_context(entry.completion_item, entry.source)
-                        if completion_context ~= nil and completion_context ~= "" and item_with_kind.menu ~= nil then
-                            item_with_kind.menu = item_with_kind.menu .. completion_context
-                        end
+
+                        local source_icons = {
+                            nvim_lsp = "[LSP] ",
+                            lazydev = "[LazyDev] ",
+                            path = "[Path] ",
+                            buffer = "[Buf] ",
+                            luasnip = "[Snip] ",
+                            nvim_lua = "[Lua] ",
+                        -- Add more sources as needed
+                        }
+
+                        -- Get the appropriate prefix or default to [Src]
+                        local prefix = source_icons[entry.source.name] or string.format("[%s] ", entry.source.name)
+
+                        -- Move any existing menu text after our prefix
+                        item_with_kind.menu = prefix .. (item_with_kind.menu or "")
 
                         return item_with_kind
                     end
@@ -326,7 +261,7 @@ return {
                             kind1 = kind1 == types.lsp.CompletionItemKind.Text and 100 or kind1
                             kind2 = kind2 == types.lsp.CompletionItemKind.Text and 100 or kind2
                             if kind1 ~= kind2 then
-                                -- Disable putting snippets at the top
+                                -- Enable putting snippets at the top by undoing next two if statements
                                 --if kind1 == types.lsp.CompletionItemKind.Snippet then
                                     --return true
                                 --end
