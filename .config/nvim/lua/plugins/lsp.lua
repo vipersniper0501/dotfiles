@@ -58,6 +58,9 @@ return {
             -- Other gneral lsp config settings
             vim.diagnostic.config({
               virtual_text = false,
+                virtual_lines = {
+                    current_line = true
+                },
               severity_sort = true,
               float = {
                 border = 'rounded',
@@ -65,18 +68,11 @@ return {
               },
             })
 
-            -- Set borders around popup windows
-            local _border = "single"
-
             vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
               vim.lsp.handlers.hover, {
-                border = _border
+                border = "rounded"
               }
             )
-
-            vim.diagnostic.config{
-              float={border=_border}
-            }
 
 
             _G.shift_k_enabled = false
