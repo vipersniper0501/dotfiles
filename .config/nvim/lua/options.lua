@@ -40,3 +40,13 @@ vim.api.nvim_set_keymap('n', 'j', 'gj', { noremap = true })
 vim.api.nvim_set_keymap('n', 'k', 'gk', { noremap = true })
 vim.api.nvim_set_keymap('n', '<esc>', '<esc>:noh<cr>', { noremap = true, silent = true })
 
+-- Set all floating windows to have these defaults unless overridden
+local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
+
+vim.lsp.util.open_floating_preview = function(contents, syntax, opts, ...)
+  opts = opts or {}
+  opts.border = opts.border or "rounded"
+  opts.max_width = opts.max_width or 80
+  opts.max_height = opts.max_height or 15
+  return orig_util_open_floating_preview(contents, syntax, opts, ...)
+end

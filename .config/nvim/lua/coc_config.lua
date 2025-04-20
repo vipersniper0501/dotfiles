@@ -42,7 +42,7 @@ vim.api.nvim_create_autocmd({"CursorMoved", "BufEnter"}, {
 })
 
 -- Use K to show documentation in preview window
-function _G.show_docs()
+function _G.coc_show_docs()
     _G.shift_k_enabled = true
     local cw = vim.fn.expand('<cword>')
     if vim.fn.index({'vim', 'help'}, vim.bo.filetype) >= 0 then
@@ -54,7 +54,7 @@ function _G.show_docs()
     end
 end
 
-keyset("n", "K", '<CMD>lua _G.show_docs()<CR>', {silent = true})
+keyset("n", "K", '<CMD>lua _G.coc_show_docs()<CR>', {silent = true})
 
 -- Highlight the symbol and its references on a CursorHold event(cursor is idle)
 vim.api.nvim_create_augroup("CocGroup", {})

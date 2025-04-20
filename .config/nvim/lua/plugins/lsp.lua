@@ -54,12 +54,17 @@ return {
             lspconfig.jdtls.setup({
                 capabilities = capabilities
             })
+
             -- Other general lsp config settings
+            local virtual_lines_config
+            if vim.fn.has('nvim-0.11') == 1 then
+                virtual_lines_config = { current_line = true }
+            else
+                virtual_lines_config = false
+            end
             vim.diagnostic.config({
               virtual_text = false,
-                virtual_lines = {
-                    current_line = true
-                },
+              virtual_lines = virtual_lines_config,
               severity_sort = true,
               float = {
                 border = 'rounded',
@@ -76,31 +81,35 @@ return {
             _G.shift_k_enabled = false
             vim.api.nvim_create_augroup("LspGroup", {})
 
-            vim.api.nvim_create_autocmd("CursorHold", {
-                group = "LspGroup",
-                callback = function()
-                    if not _G.shift_k_enabled then
-                        vim.diagnostic.open_float(0, {
-                            scope = "cursor",
-                            focusable = false,
-                            close_events = {
-                                "CursorMoved",
-                                "CursorMovedI",
-                                "BufHidden",
-                                "InsertCharPre",
-                                "WinLeave",
-                              },
-                        })
+            -- if using neovim < 0.11 show diagnostics on cursor hold on erroring
+            -- code. Otherwise disable this as we can use the virtual lines to show
+            -- the errors better
+            if vim.fn.has('nvim-0.11') ~= 1 then
+                vim.api.nvim_create_autocmd("CursorHold", {
+                    group = "LspGroup",
+                    callback = function()
+                        if not _G.shift_k_enabled then
+                            vim.diagnostic.open_float(nil, {
+                                scope = "cursor",
+                                focusable = false,
+                                close_events = {
+                                    "CursorMoved",
+                                    "CursorMovedI",
+                                    "BufHidden",
+                                    "InsertCharPre",
+                                    "WinLeave",
+                                  },
+                            })
+                        end
+                    end,
+                    desc = "Show diagnostic error info on CursorHold"
+                })
+                vim.api.nvim_create_autocmd({"CursorMoved", "BufEnter"}, {
+                    callback = function()
+                        _G.shift_k_enabled = false
                     end
-                end,
-                desc = "Show diagnostic error info on CursorHold"
-            })
-
-            vim.api.nvim_create_autocmd({"CursorMoved", "BufEnter"}, {
-                callback = function()
-                    _G.shift_k_enabled = false
-                end
-            })
+                })
+            end
 
 
             function _G.show_docs()
@@ -109,8 +118,8 @@ return {
                 if vim.fn.index({'vim', 'help'}, vim.bo.filetype) >= 0 then
                     vim.api.nvim_command('h ' .. cw)
                 else
-                    vim.lsp.buf.hover()
-                    --vim.api.nvim_command("Lspsaga hover_doc")
+                    --vim.lsp.buf.hover()
+                    vim.api.nvim_command("Lspsaga hover_doc")
                 end
             end
 
@@ -209,7 +218,7 @@ return {
                             lazydev = "[LazyDev] ",
                             path = "[Path] ",
                             buffer = "[Buf] ",
-                            luasnip = "[Snip] ",
+                            luasnip = "[LuaSnip] ",
                             nvim_lua = "[Lua] ",
                         -- Add more sources as needed
                         }
@@ -308,43 +317,6 @@ return {
             cmp.event:on(
               'confirm_done',
               cmp_autopairs.on_confirm_done()
-            )
-            local handlers = require('nvim-autopairs.completion.handlers')
-
-            cmp.event:on(
-              'confirm_done',
-              cmp_autopairs.on_confirm_done({
-                filetypes = {
-                  -- "*" is a alias to all filetypes
-                  ["*"] = {
-                    ["("] = {
-                      kind = {
-                        cmp.lsp.CompletionItemKind.Function,
-                        cmp.lsp.CompletionItemKind.Method,
-                      },
-                      handler = handlers["*"]
-                    }
-                  },
-                  lua = {
-                    ["("] = {
-                      kind = {
-                        cmp.lsp.CompletionItemKind.Function,
-                        cmp.lsp.CompletionItemKind.Method
-                      },
-                      ---@param char string
-                      ---@param item table item completion
-                      ---@param bufnr number buffer number
-                      ---@param rules table
-                      ---@param commit_character table<string>
-                      handler = function(char, item, bufnr, rules, commit_character)
-                        -- Your handler function. Inspect with print(vim.inspect{char, item, bufnr, rules, commit_character})
-                      end
-                    }
-                  },
-                  -- Disable for tex
-                  tex = false
-                }
-              })
             )
         end
     },
