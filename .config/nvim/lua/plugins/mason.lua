@@ -6,21 +6,29 @@ return {
                 ensure_installed = { "lua_ls", "rust_analyzer", "clangd",
                     "pyright", "gopls", "ts_ls", "zls", "vimls", "volar",
                     "glsl_analyzer", "rnix", "jdtls", "stylua", "checkmake",
-                    "ansible-lint", "cmakelint", "csharp_ls"},
+                    "ansible-lint", "cmakelint", "roslyn", "bashls",
+                    "ansible-language-server", "r-languageserver", "svelte-language-server"},
                 run_on_start = true,
             })
         end
     },
     {
-        "williamboman/mason.nvim",
+        "mason-org/mason.nvim",
         config = function()
-            require("mason").setup()
+            require("mason").setup({
+                registries = {
+                    "github:mason-org/mason-registry", -- official registry
+                    "github:Crashdummyy/mason-registry", -- used for Roslyn LSP
+                }
+            })
+            local registry = require("mason-registry")
+            registry.refresh()
         end
     },
     {
-        "williamboman/mason-lspconfig.nvim",
+        "mason-org/mason-lspconfig.nvim",
         config = function()
-            require("mason-lspconfig").setup({})
+            require("mason-lspconfig").setup()
         end
     },
 }

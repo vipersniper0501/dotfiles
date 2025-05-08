@@ -4,56 +4,72 @@ return {
         lazy = false,
         config = function()
 
-            local lspconfig = require("lspconfig")
-            local capabilities = require("cmp_nvim_lsp").default_capabilities()
+            if vim.fn.has('nvim-0.11') ~= 1 then
+                local lspconfig = require("lspconfig")
+                local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-            -- Enable/setup a bunch of LSPs that were installed/downloaded via Mason
-            lspconfig.lua_ls.setup({
-                capabilities = capabilities,
-            })
-            lspconfig.rust_analyzer.setup({
-                capabilities = capabilities,
-                settings = {
-                    ['rust-analyzer'] = {
-                        diagnostics = {
-                            enable = true
-                        }
-                    }
-                }
-            })
-            lspconfig.clangd.setup({
-                capabilities = capabilities
-            })
-            lspconfig.csharp_ls.setup({
-                capabilities = capabilities
-            })
-            lspconfig.pyright.setup({
-                capabilities = capabilities
-            })
-            lspconfig.gopls.setup({
-                capabilities = capabilities
-            })
-            lspconfig.ts_ls.setup({
-                capabilities = capabilities
-            })
-            lspconfig.zls.setup({
-                capabilities = capabilities
-            })
-            lspconfig.vimls.setup({
-                capabilities = capabilities
-            })
-            lspconfig.volar.setup({
-                capabilities = capabilities
-            })
-            lspconfig.glsl_analyzer.setup({
-                capabilities = capabilities
-            })
-            lspconfig.rnix.setup({
-                capabilities = capabilities
-            })
-            lspconfig.jdtls.setup({
-                capabilities = capabilities
-            })
+                 --Enable/setup a bunch of LSPs that were installed/downloaded via Mason
+                lspconfig.lua_ls.setup({
+                    capabilities = capabilities,
+                })
+                lspconfig.rust_analyzer.setup({
+                    capabilities = capabilities,
+                    diagnostics = {
+                        enable = true
+                    },
+                })
+                lspconfig.clangd.setup({
+                    capabilities = capabilities
+                })
+
+                local user = os.getenv("USER")
+
+                lspconfig.omnisharp.setup({
+                    capabilities = capabilities,
+                    enable_import_completion = true,
+                    cmd = { "dotnet", string.format("/home/%s/.local/share/nvim/mason/packages/omnisharp/libexec/OmniSharp.dll", user)},
+                    root_markers = { ".sln", ".csproj", "omnisharp.json", "function.json" },
+                })
+                lspconfig.pyright.setup({
+                    capabilities = capabilities
+                })
+                lspconfig.gopls.setup({
+                    capabilities = capabilities
+                })
+                lspconfig.ts_ls.setup({
+                    capabilities = capabilities
+                })
+                lspconfig.zls.setup({
+                    capabilities = capabilities
+                })
+                lspconfig.vimls.setup({
+                    capabilities = capabilities
+                })
+                lspconfig.volar.setup({
+                    capabilities = capabilities
+                })
+                lspconfig.glsl_analyzer.setup({
+                    capabilities = capabilities
+                })
+                lspconfig.rnix.setup({
+                    capabilities = capabilities
+                })
+                lspconfig.jdtls.setup({
+                    capabilities = capabilities
+                })
+                lspconfig.r_language_server.setup({
+                    capabilities = capabilities
+                })
+                lspconfig.svelte.setup({
+                    capabilities = capabilities
+                })
+                lspconfig.bashls.setup({
+                    capabilities = capabilities
+                })
+                lspconfig.ansiblels.setup({
+                    capabilities = capabilities
+                })
+            end
 
             -- Other general lsp config settings
             local virtual_lines_config
@@ -132,6 +148,25 @@ return {
             vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, {noremap = true, silent = true})
         end
     },
+    {
+        "seblyng/roslyn.nvim",
+        ft = "cs",
+        ---@module 'roslyn.config'
+        ---@type RoslynNvimConfig
+        opts = {
+            -- your configuration comes here; leave empty for default settings
+            -- NOTE: You must configure `cmd` in `config.cmd` unless you have installed via mason
+
+            ---- Disable automatic signature help on '('
+            --on_attach = function(client, bufnr)
+              ---- Override trigger characters to exclude '(' (keep ',' for generics)
+              --client.server_capabilities.signatureHelpProvider = {
+                --triggerCharacters = { "," },
+                --retriggerCharacters = {}
+              --}
+            --end,
+        }
+    },
     "hrsh7th/cmp-nvim-lsp",
     "hrsh7th/cmp-buffer",
     "hrsh7th/cmp-path",
@@ -196,7 +231,12 @@ return {
                     ghost_text = false
                 },
                 window = {
-                    completion = cmp.config.window.bordered(),
+                    completion = {
+                        -- Max height = 5 items, with scrollbar
+                        max_height = math.floor(vim.o.lines * 0.3), -- 30% of screen height
+                        scrollbar = true, -- optional
+                        border = "rounded"
+                    },
                     documentation = cmp.config.window.bordered(),
                 },
                 completion = {
