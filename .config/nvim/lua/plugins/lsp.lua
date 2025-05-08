@@ -22,14 +22,14 @@ return {
                     capabilities = capabilities
                 })
 
-                local user = os.getenv("USER")
+                --local user = os.getenv("USER")
 
-                lspconfig.omnisharp.setup({
-                    capabilities = capabilities,
-                    enable_import_completion = true,
-                    cmd = { "dotnet", string.format("/home/%s/.local/share/nvim/mason/packages/omnisharp/libexec/OmniSharp.dll", user)},
-                    root_markers = { ".sln", ".csproj", "omnisharp.json", "function.json" },
-                })
+                --lspconfig.omnisharp.setup({
+                    --capabilities = capabilities,
+                    --enable_import_completion = true,
+                    --cmd = { "dotnet", string.format("/home/%s/.local/share/nvim/mason/packages/omnisharp/libexec/OmniSharp.dll", user)},
+                    --root_markers = { ".sln", ".csproj", "omnisharp.json", "function.json" },
+                --})
                 lspconfig.pyright.setup({
                     capabilities = capabilities
                 })
@@ -332,24 +332,21 @@ return {
                     },
                 },
             })
-
             -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
             cmp.setup.cmdline({ '/', '?' }, {
-            mapping = cmp.mapping.preset.cmdline(),
-            sources = {
-                { name = 'buffer' }
-            }
+                mapping = cmp.mapping.preset.cmdline(),
+                sources = {
+                    { name = 'buffer' }
+                }
             })
 
             -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
             cmp.setup.cmdline(':', {
-            mapping = cmp.mapping.preset.cmdline(),
-            sources = cmp.config.sources({
-                { name = 'path' }
-            }, {
-                { name = 'cmdline' }
-            }),
-            matching = { disallow_symbol_nonprefix_matching = false }
+                sources = cmp.config.sources({
+                    { name = 'path' }
+                }, {
+                    { name = 'cmdline' }
+                }),
             })
 
             -- If you want insert `(` after select function or method item
