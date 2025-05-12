@@ -19,7 +19,6 @@
 alias dotfile_config="git --git-dir=$HOME/.dot_cfg/.git --work-tree=$HOME/.dot_cfg"
 alias ll="ls -la --color=auto"
 alias ls="ls --color=auto"
-alias rm='rm -i'
 
 
 HISTFILE=~/.zsh_history
