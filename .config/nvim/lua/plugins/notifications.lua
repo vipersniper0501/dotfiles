@@ -113,7 +113,6 @@ return {
                       string.format("%s/fidget.nvim.log", vim.fn.stdpath("cache")),
                 },
             })
-
         end
     },
 }

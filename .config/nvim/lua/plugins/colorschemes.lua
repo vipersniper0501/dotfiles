@@ -9,8 +9,7 @@ return {
     {
        "navarasu/onedark.nvim",
         priority = 1000,
-        config = function()
-        end
+        opts = {}
     },
     {
         "polirritmico/monokai-nightasty.nvim",
