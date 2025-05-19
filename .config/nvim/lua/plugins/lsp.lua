@@ -107,7 +107,7 @@ return {
                         if not _G.shift_k_enabled then
                             vim.diagnostic.open_float(nil, {
                                 scope = "cursor",
-                                focusable = false,
+                                focusable = true,
                                 close_events = {
                                     "CursorMoved",
                                     "CursorMovedI",
@@ -130,11 +130,13 @@ return {
 
             function _G.show_docs()
                 _G.shift_k_enabled = true
+                vim.api.nvim_command("doautocmd CursorMovedI") -- Run autocmd to close diagnostic window if already open
+
                 local cw = vim.fn.expand('<cword>')
                 if vim.fn.index({'vim', 'help'}, vim.bo.filetype) >= 0 then
                     vim.api.nvim_command('h ' .. cw)
                 else
-                    --vim.lsp.buf.hover()
+                    --vim.lsp.buf.hover() -- use if you want to use builtin LSP hover
                     vim.api.nvim_command("Lspsaga hover_doc")
                 end
             end
