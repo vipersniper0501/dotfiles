@@ -7,7 +7,7 @@ o.syntax = "on"
 o.ignorecase = true
 o.smartcase = true
 o.hlsearch = true
-o.autoindent = true
+o.smartindent = true
 o.ruler = true
 o.mouse = "a"
 o.tags = "tags"
@@ -35,6 +35,10 @@ o.spelllang = "en_us"
 o.signcolumn = "number"
 o.completeopt = {'menu', 'menuone', 'noselect'}
 vim.api.nvim_set_option_value("colorcolumn", "80", {})
+
+_G.enable_virtual_lines = false -- only works in neovim 0.11+
+
+
 
 vim.api.nvim_set_keymap('n', 'j', 'gj', { noremap = true })
 vim.api.nvim_set_keymap('n', 'k', 'gk', { noremap = true })

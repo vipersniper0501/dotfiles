@@ -5,8 +5,7 @@ return {
         config = function()
             local treesitter = require("nvim-treesitter.configs")
 
-            treesitter.setup(
-                {
+            treesitter.setup({
                     ensure_installed = {"cmake", "python", "cpp", "java",
                         "javascript", "css", "c", "jsdoc", "make", "markdown",
                         "html", "typescript", "tsx", "ruby", "rust", "vim", "bash",
@@ -20,8 +19,12 @@ return {
                     sync_install = false,
                     auto_install = true,
                     ignore_install = {},
-                    highlight = { enable = true },
-                    indent = {enable = true},
+                    highlight = {
+                        enable = true
+                    },
+                    indent = {
+                        enable = true
+                    },
                     dependencies = {
                         "windwp/nvim-ts-autotag",
                     },

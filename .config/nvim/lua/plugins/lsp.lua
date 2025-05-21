@@ -69,11 +69,21 @@ return {
                 lspconfig.ansiblels.setup({
                     capabilities = capabilities
                 })
+
+            else
+                vim.lsp.config('gopls', {
+                    settings = {
+                        gopls = {
+                            gofumpt = false --disable go format
+                        }
+                    },
+                })
             end
+            vim.g.go_recommended_style = 0
 
             -- Other general lsp config settings
             local virtual_lines_config
-            if vim.fn.has('nvim-0.11') == 1 then
+            if vim.fn.has('nvim-0.11') == 1 and _G.enable_virtual_lines then
                 virtual_lines_config = { current_line = true }
             else
                 virtual_lines_config = false
@@ -98,16 +108,17 @@ return {
             vim.api.nvim_create_augroup("LspGroup", {})
 
             -- if using neovim < 0.11 show diagnostics on cursor hold on erroring
-            -- code. Otherwise disable this as we can use the virtual lines to show
-            -- the errors better
-            if vim.fn.has('nvim-0.11') ~= 1 then
+            -- code. Otherwise, using the enable_virtual_lines option in options.lua
+            -- disable this as we can use the virtual lines to show the errors under the
+            -- line.
+            if _G.enable_virtual_lines == false then
                 vim.api.nvim_create_autocmd("CursorHold", {
                     group = "LspGroup",
                     callback = function()
                         if not _G.shift_k_enabled then
                             vim.diagnostic.open_float(nil, {
                                 scope = "cursor",
-                                focusable = true,
+                                focusable = false,
                                 close_events = {
                                     "CursorMoved",
                                     "CursorMovedI",
