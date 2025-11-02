@@ -38,6 +38,19 @@ vim.api.nvim_set_option_value("colorcolumn", "80", {})
 
 _G.enable_virtual_lines = false -- only works in neovim 0.11+
 
+-- Set tab width = 2 spaces for JS/TS files
+vim.api.nvim_create_augroup("SetTwoSpaceIndent", { clear = true })
+
+vim.api.nvim_create_autocmd("FileType", {
+  group = "SetTwoSpaceIndent",
+  pattern = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
+  callback = function()
+    vim.opt_local.shiftwidth = 2
+    vim.opt_local.tabstop = 2
+    vim.opt_local.softtabstop = 2
+  end,
+})
+
 
 
 vim.api.nvim_set_keymap('n', 'j', 'gj', { noremap = true })
