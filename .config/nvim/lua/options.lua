@@ -2,6 +2,7 @@
 local o = vim.opt
 
 vim.g.mapleader = ";"
+vim.g.maplocalleader = ";"
 o.compatible = false
 o.syntax = "on"
 o.ignorecase = true
