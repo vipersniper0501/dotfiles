@@ -147,13 +147,13 @@ return {
                 if vim.fn.index({'vim', 'help'}, vim.bo.filetype) >= 0 then
                     vim.api.nvim_command('h ' .. cw)
                 else
-                    --vim.lsp.buf.hover() -- use if you want to use builtin LSP hover
-                    vim.api.nvim_command("Lspsaga hover_doc")
+                    vim.lsp.buf.hover() -- use if you want to use builtin LSP hover
+                    --vim.api.nvim_command("Lspsaga hover_doc")
                 end
             end
 
             vim.keymap.set("n", "K",  _G.show_docs, {noremap = true, silent = true})
-            vim.keymap.set("n", "gd", require("telescope.builtin").lsp_definitions, {noremap = true, silent = true})
+            vim.keymap.set("n", "gd", vim.lsp.buf.definition, {noremap = true, silent = true})
             vim.keymap.set("n", "gi", require("telescope.builtin").lsp_implementations, {noremap = true, silent = true})
             vim.keymap.set('n', 'gr', require("telescope.builtin").lsp_references, {noremap = true, silent = true})
             vim.keymap.set('n', 'gy', vim.lsp.buf.type_definition, {noremap = true, silent = true})
@@ -222,10 +222,20 @@ return {
 
                 -- Trigger on server's trigger characters
                 if vim.tbl_contains(buf_triggers, prev_char) then
-                  vim.defer_fn(vim.lsp.buf.signature_help, 50)
+                  vim.defer_fn(function()
+                    vim.lsp.buf.signature_help({
+                      focusable = false,
+                      focus = false,
+                    })
+                    end, 50)
                 -- Trigger on space after comma
                 elseif prev_char == ' ' and vim.tbl_contains(buf_triggers, prev_prev_char) then
-                  vim.defer_fn(vim.lsp.buf.signature_help, 50)
+                  vim.defer_fn(function()
+                    vim.lsp.buf.signature_help({
+                      focusable = false,
+                      focus = false,
+                    })
+                  end, 50)
                 end
               end
             })
