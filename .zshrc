@@ -19,6 +19,7 @@
 alias dotfile_config="git --git-dir=$HOME/.dot_cfg/.git --work-tree=$HOME/.dot_cfg"
 alias ll="ls -la --color=auto"
 alias ls="ls --color=auto"
+alias cd="z"
 
 
 HISTFILE=~/.zsh_history
@@ -74,6 +75,10 @@ if [ -d /usr/local/go ]; then
     export PATH=$PATH:/usr/local/go/bin
 fi
 
+if [ -d /home/$USER/go/bin ]; then
+    export PATH=$PATH:/home/$USER/go/bin
+fi
+
 
 # If you are using GWSL and not using Windows 11 and not using WSL Version 2 for your 
 # linux distrobution, then uncomment the following two lines to enable the use of
@@ -109,4 +114,6 @@ if ! command -v podman >/dev/null 2>&1 && command -v podman-remote >/dev/null 2>
 fi
 
 
+autoload -U compinit; compinit
 eval "$(starship init zsh)"
+eval "$(zoxide init zsh)"
