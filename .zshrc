@@ -26,6 +26,9 @@ HISTSIZE=1000
 SAVEHIST=1000
 setopt appendhistory
 
+if [ -d /home/$USER/go/bin ]; then
+    export PATH=$PATH:/home/$USER/go/bin
+fi
 
 if [ -d /home/$USER/.my_bin ]; then
     alias nvim="~/.my_bin/nvim.appimage"
@@ -94,7 +97,16 @@ export CHROME_BIN=/mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe
 # Load Angular CLI autocompletion.
 #source <(ng completion script)
 
-source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+# For local installations when using git clone of the repo
+#source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# For when installed via DNF on fedora
+source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# Check if podman-remote exists, and podman does not. If not, create alias
+if ! command -v podman >/dev/null 2>&1 && command -v podman-remote >/dev/null 2>&1; then
+    alias podman="podman-remote"
+fi
 
 
 eval "$(starship init zsh)"

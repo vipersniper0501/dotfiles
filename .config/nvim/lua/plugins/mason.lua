@@ -2,7 +2,8 @@ local general_installed_lsps = {
     "lua_ls", "rust_analyzer", "clangd",
     "pyright", "gopls", "ts_ls", "zls", "vimls", "vue_ls",
     "glsl_analyzer", "rnix", "jdtls",
-    "omnisharp", "bashls", "ansiblels", "r_language_server", "svelte"
+    "omnisharp", "bashls", "ansiblels", "r_language_server", "svelte",
+    "texlab"
 }
 
 local is_nvim_011 = vim.fn.has('nvim-0.11') == 1
